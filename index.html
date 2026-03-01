@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battersea K9 — Bespoke Canine Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #1C3A2B;
+    --green:    #2D6A4F;
+    --sage:     #7DBF6E;
+    --mint:     #A8C5A0;
+    --cream:    #F5F0E8;
+    --offwhite: #FAF8F3;
+    --charcoal: #2A2A2A;
+    --muted:    #5A5A5A;
+    --border:   rgba(28,58,43,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--offwhite); color: var(--charcoal); overflow-x: hidden; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(245,240,232,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(28,58,43,0.1); }
+
+  .nav-inner {
+    max-width: 1300px; margin: 0 auto; padding: 0 2rem;
+    height: 72px; display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem;
+    color: var(--forest); text-decoration: none;
+    display: flex; align-items: center; gap: 0.4rem; letter-spacing: -0.5px;
+  }
+  .logo em { font-style: italic; color: var(--green); }
+
+  .nav-links { list-style: none; display: flex; align-items: center; gap: 2.5rem; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.3px; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--forest); }
+
+  .nav-cta {
+    background: var(--forest) !important; color: var(--cream) !important;
+    padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--green) !important; transform: translateY(-1px); }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px; background: none; border: none;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--forest); border-radius: 2px; transition: all 0.3s; }
+
+  /* HERO */
+  .hero {
+    margin-top: 72px; min-height: calc(100vh - 72px);
+    background: var(--forest); position: relative; overflow: hidden; display: flex; align-items: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; width: 700px; height: 700px;
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.05);
+    top: -200px; right: -150px;
+  }
+  .hero::after {
+    content: ''; position: absolute; width: 400px; height: 400px;
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.04);
+    bottom: -100px; left: -80px;
+  }
+  .hero-bg-paw {
+    position: absolute; font-size: 500px; color: rgba(255,255,255,0.025);
+    right: -60px; bottom: -80px; line-height: 1; pointer-events: none; user-select: none;
+  }
+  .hero-inner {
+    max-width: 1300px; margin: 0 auto; padding: 5rem 2rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center; position: relative; z-index: 1;
+  }
+  .hero-overline {
+    font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--mint); margin-bottom: 1.2rem; animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 4.8rem);
+    font-weight: 900; line-height: 1.05; color: var(--cream); margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero-title em { font-style: italic; color: var(--sage); }
+  .hero-sub {
+    font-size: 1.15rem; font-weight: 300; line-height: 1.7;
+    color: rgba(245,240,232,0.65); max-width: 480px; margin-bottom: 2.5rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.8s ease 0.3s both; }
+
+  .btn-primary {
+    background: var(--sage); color: var(--forest); padding: 0.9rem 2.2rem;
+    border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    transition: all 0.2s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--mint); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(125,191,110,0.35); }
+
+  .btn-outline {
+    background: transparent; color: var(--cream); padding: 0.9rem 2.2rem;
+    border-radius: 50px; text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    border: 1.5px solid rgba(245,240,232,0.3); transition: all 0.2s; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--cream); background: rgba(245,240,232,0.08); }
+
+  .hero-image { position: relative; animation: fadeIn 1s ease 0.4s both; }
+  .hero-image-frame {
+    width: 100%; aspect-ratio: 4/5; border-radius: 16px; display: block;
+    background: image-set(url('images/bella.webp') type('image/webp'), url('images/bella.jpg') type('image/jpeg')) center/cover no-repeat;
+    background-color: var(--green);
+  }
+
+  /* SECTIONS */
+  section { padding: 7rem 2rem; }
+  .section-inner { max-width: 1300px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--forest); margin-bottom: 1.2rem; }
+  .section-title em { font-style: italic; color: var(--green); }
+  .section-desc { font-size: 1.05rem; line-height: 1.75; color: var(--muted); max-width: 580px; }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 1rem; margin: 0 2rem; }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-paw { font-size: 1rem; opacity: 0.4; }
+
+  /* DAYCARE */
+  #daycare { background: var(--offwhite); }
+  .daycare-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; gap: 2rem; flex-wrap: wrap; }
+  .daycare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .daycare-card {
+    background: var(--cream); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2.5rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .daycare-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: var(--green); transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+  }
+  .daycare-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(28,58,43,0.1); }
+  .daycare-card:hover::before { transform: scaleX(1); }
+  .card-num { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: rgba(28,58,43,0.06); line-height: 1; margin-bottom: 1rem; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--forest); margin-bottom: 0.75rem; }
+  .card-text { font-size: 0.95rem; line-height: 1.75; color: var(--muted); }
+
+  /* TRAINING */
+  #training { background: var(--cream); }
+  .training-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  .training-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
+  .training-list li {
+    background: var(--offwhite); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.4rem 1.6rem 1.4rem 2.2rem; transition: all 0.25s; position: relative;
+  }
+  .training-list li::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; background: var(--green); border-radius: 4px 0 0 4px;
+  }
+  .training-list li:hover { transform: translateX(6px); box-shadow: 0 4px 20px rgba(28,58,43,0.08); }
+  .training-list strong { display: block; font-weight: 600; color: var(--forest); margin-bottom: 0.3rem; font-size: 0.95rem; }
+  .training-list span { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+  .trainer-card {
+    background: var(--forest); border-radius: 20px; padding: 3rem;
+    color: var(--cream); position: sticky; top: 100px;
+  }
+  .trainer-photo {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover;
+    border-radius: 16px; margin-top: 1.5rem; display: block;
+  }
+  .trainer-label { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--mint); margin-bottom: 1rem; }
+  .trainer-name { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--cream); margin-bottom: 1rem; line-height: 1.1; }
+  .trainer-name em { font-style: italic; color: var(--sage); }
+  .trainer-bio { font-size: 0.95rem; line-height: 1.75; color: rgba(245,240,232,0.7); margin-bottom: 2rem; }
+  .trainer-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 1.2rem; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--sage); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-size: 0.8rem; color: rgba(245,240,232,0.5); letter-spacing: 0.5px; }
+
+  /* CATCHMENT */
+  #catchment { background: var(--offwhite); }
+  .map-frame { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-top: 3rem; height: 520px; position: relative; }
+  .map-frame iframe { position: absolute; inset: 0; width: 100%; border: 0; transform: translateY(-70px); height: calc(100% + 70px); }
+
+  /* GALLERY */
+  #gallery { background: var(--cream); }
+  .gallery-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; gap: 2rem; flex-wrap: wrap; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; max-width: 820px; margin: 0 auto; }
+  .gallery-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14px; display: block; transition: transform 0.3s, box-shadow 0.3s; }
+  .gallery-grid img.crop-luigi { object-position: center 90%; }
+  .gallery-grid img.crop-lyla  { object-position: center 40%; }
+  .gallery-grid img:hover { transform: scale(1.02); box-shadow: 0 16px 50px rgba(28,58,43,0.15); }
+  .gallery-cta { text-align: center; margin-top: 2.5rem; }
+
+  .btn-secondary {
+    display: inline-block; background: transparent; color: var(--forest);
+    border: 1.5px solid var(--forest); padding: 0.85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--forest); color: var(--cream); transform: translateY(-2px); }
+
+  /* CONTACT */
+  #contact { background: var(--forest); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: start; margin-top: 4rem; }
+  .contact-info-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--cream); margin-bottom: 2rem; }
+  .contact-info-title em { font-style: italic; color: var(--sage); }
+  .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; color: rgba(245,240,232,0.75); font-size: 0.95rem; }
+  .contact-dot { width: 32px; height: 32px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.85rem; font-weight: 600; color: rgba(245,240,232,0.6); letter-spacing: 0.5px; text-transform: uppercase; }
+  .form-group input, .form-group textarea {
+    background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 0.9rem 1.1rem; color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; transition: border-color 0.2s, background 0.2s; width: 100%;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(245,240,232,0.3); }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--sage); background: rgba(255,255,255,0.1); }
+  .form-group textarea { min-height: 140px; resize: vertical; }
+  .submit-btn {
+    background: var(--sage); color: var(--forest); border: none;
+    padding: 1rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1rem;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; width: 100%; margin-top: 0.5rem;
+  }
+  .submit-btn:hover { background: var(--mint); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(125,191,110,0.3); }
+  .form-status { margin-top: 0.75rem; padding: 0.9rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; display: none; }
+  .form-status.success { display: block; background: rgba(125,191,110,0.15); border: 1px solid rgba(125,191,110,0.3); color: var(--sage); }
+  .form-status.error { display: block; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; }
+
+  /* FOOTER */
+  footer {
+    background: #111e17; padding: 2rem; text-align: center;
+    font-size: 0.85rem; color: rgba(245,240,232,0.3); letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* MOBILE */
+  @media (max-width: 968px) {
+    .nav-links {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: rgba(245,240,232,0.98); backdrop-filter: blur(12px);
+      flex-direction: column; align-items: flex-start;
+      padding: 1.5rem 2rem 2rem; gap: 1.25rem;
+      box-shadow: 0 20px 40px rgba(28,58,43,0.12); z-index: 999;
+    }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-image { display: none; }
+    .hero-title { font-size: 2.8rem; }
+    .daycare-grid { grid-template-columns: 1fr; }
+    .training-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .trainer-card { position: static; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .daycare-header, .gallery-header { flex-direction: column; align-items: flex-start; }
+    section { padding: 5rem 1.5rem; }
+  }
+  @media (max-width: 640px) {
+    .gallery-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-outline { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">🐾 Battersea <em>K9</em></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#daycare">Daycare</a></li>
+      <li><a href="#training">Training</a></li>
+      <li><a href="#catchment">Service Area</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-paw">🐾</div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-overline">Battersea &amp; Chelsea · Est. 2024</div>
+      <h1 class="hero-title">
+        Bespoke canine<br>services in the<br>heart of <em>South West<br>London.</em>
+      </h1>
+      <p class="hero-sub">
+        Daycare, training, and boarding services tailored to each client — because no two dogs are the same.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get In Touch</a>
+        <a href="#daycare" class="btn-outline">Our Services</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-frame"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- DAYCARE -->
+<section id="daycare">
+  <div class="section-inner">
+    <div class="daycare-header reveal">
+      <div>
+        <div class="section-label">What we offer</div>
+        <h2 class="section-title">Premium<br><em>Daycare Services</em></h2>
+      </div>
+      <p class="section-desc">We create a safe, fun, and structured environment for all the dogs that stay with us — with care that goes well beyond the basics.</p>
+    </div>
+    <div class="daycare-grid">
+      <div class="daycare-card reveal">
+        <div class="card-num">01</div>
+        <div class="card-title">Daily Exercise</div>
+        <p class="card-text">Multiple walks throughout the day with individual attention and high stimulation, tailored to each owner's preferences.</p>
+      </div>
+      <div class="daycare-card reveal" style="transition-delay:0.1s">
+        <div class="card-num">02</div>
+        <div class="card-title">Drop Offs &amp; Pick Ups</div>
+        <p class="card-text">We offer collection services, picking your pup up from their doorstep, or drop-off services where you bring them to us.</p>
+      </div>
+      <div class="daycare-card reveal" style="transition-delay:0.2s">
+        <div class="card-num">03</div>
+        <div class="card-title">Flexible Packages</div>
+        <p class="card-text">Full-day, half-day, boarding and walk-only packages available — working around your schedule and budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- TRAINING -->
+<section id="training">
+  <div class="section-inner">
+    <div class="training-inner">
+      <div class="reveal">
+        <div class="section-label">Expert training</div>
+        <h2 class="section-title">Professional<br><em>Training Programs</em></h2>
+        <p class="section-desc">Led by Jack, a qualified trainer with over 10 years experience across military and civilian settings.</p>
+        <ul class="training-list">
+          <li><strong>Puppy Foundation Classes</strong><span>Essential socialisation and basic obedience for puppies aged 8–16 weeks, setting them up for lifelong success.</span></li>
+          <li><strong>Basic Obedience Training</strong><span>Master essential commands including sit, stay, come, down, and loose-leash walking in various environments.</span></li>
+          <li><strong>Advanced Obedience</strong><span>Build on basic skills with off-leash reliability, distance commands, and complex behaviour sequences.</span></li>
+          <li><strong>Behaviour Modification</strong><span>Address challenges like reactivity, anxiety, jumping, or excessive barking with customised training plans.</span></li>
+          <li><strong>Group Classes</strong><span>Learn alongside other dogs in a supportive environment that builds confidence and real-world skills.</span></li>
+        </ul>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <div class="trainer-card">
+          <div class="trainer-label">Meet your trainer</div>
+          <div class="trainer-name">Jack</div>
+          <p class="trainer-bio">With a decade of experience spanning military working dog programmes and civilian pet training, Jack brings structured, evidence-based methods and genuine passion to every session.</p>
+          <div class="trainer-stats">
+            <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years experience</div></div>
+            <div class="stat"><div class="stat-num">🎖️</div><div class="stat-label">Military trained</div></div>
+            <div class="stat"><div class="stat-num">5</div><div class="stat-label">Programs offered</div></div>
+            <div class="stat"><div class="stat-num">SW</div><div class="stat-label">London based</div></div>
+          </div>
+        </div>
+<!--        <img src="images/joy.JPG" alt="Dog training session" class="trainer-photo">-->
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- CATCHMENT -->
+<section id="catchment">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Where we work</div>
+      <h2 class="section-title">Our <em>Service Area</em></h2>
+      <p class="section-desc">We proudly serve dogs and their families across the areas below. Don't see your location? Get in touch — we love to help.</p>
+    </div>
+    <div class="map-frame reveal">
+      <iframe src="https://www.google.com/maps/d/embed?mid=1DJNVs5x1V4Ub0jorl4QLnaABxgV4gZc&ehbc=2E312F" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="gallery-header reveal">
+      <div>
+        <div class="section-label">Happy moments</div>
+        <h2 class="section-title">Life at<br><em>Battersea K9</em></h2>
+      </div>
+      <a href="gallery.html" class="btn-secondary">View full gallery →</a>
+    </div>
+    <div class="gallery-grid reveal">
+      <picture>
+        <source srcset="./images/luigi.webp" type="image/webp">
+        <img src="./images/luigi.JPG" alt="Luigi at daycare" class="crop-luigi">
+      </picture>
+      <picture>
+        <source srcset="./images/echo-lyla.webp" type="image/webp">
+        <img src="./images/echo-lyla.JPG" alt="Echo and Lyla playing">
+      </picture>
+      <picture>
+        <source srcset="./images/puplyla.webp" type="image/webp">
+        <img src="./images/puplyla.JPG" alt="Pup Lyla" class="crop-lyla">
+      </picture>
+      <picture>
+        <source srcset="images/callie-luigi.webp" type="image/webp">
+        <img src="images/callie-luigi.jpg" alt="Callie and Luigi together">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label" style="color:var(--mint)">Say hello</div>
+      <h2 class="section-title" style="color:var(--cream)">Ready to give your dog<br>the <em style="color:var(--sage)">best care?</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info-title">Get <em>in touch</em></div>
+        <div class="contact-details">
+          <div class="contact-item"><div class="contact-dot">📱</div><span>WhatsApp: +447599940282</span></div>
+          <div class="contact-item"><div class="contact-dot">✉️</div><span>Email: <a href="/cdn-cgi/l/email-protection#bfd7dad3d3d0ffdddecbcbdacdccdadef48691dcd091cad4" style="color:var(--sage);text-decoration:none"><span class="__cf_email__" data-cfemail="2149444d4d4e614340555544535244406a180f424e0f544a">[email&#160;protected]</span></a></span></div>
+          <div class="contact-item"><div class="contact-dot">🕐</div><span>Hours: Mon–Sun, 8AM – 8PM</span></div>
+          <div class="contact-item"><div class="contact-dot">📍</div><span>Battersea &amp; Chelsea, London SW</span></div>
+        </div>
+      </div>
+      <form id="contactForm" name="contact" action="/#contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form reveal" style="transition-delay:0.15s">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Sarah" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about your pup and how we can help…" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+        <p id="formStatus" class="form-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>🐾</span>
+  <span>&copy; 2026 Battersea K9. All rights reserved.</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- Netlify AJAX form submit (no redirect) ---
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('formStatus');
+
+    function encodeFormData(formEl) {
+      const data = new FormData(formEl);
+      return new URLSearchParams(data).toString();
+    }
+
+    if (form && statusEl) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // reset status
+        statusEl.className = 'form-status';
+        statusEl.textContent = 'Sending…';
+        statusEl.style.display = 'block';
+
+        try {
+          const res = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeFormData(form),
+          });
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          statusEl.classList.add('success');
+          statusEl.textContent = "Thanks — your message was sent. We'll get back to you shortly.";
+          form.reset();
+        } catch (err) {
+          console.error('Form submission error:', err);
+          statusEl.classList.add('error');
+          statusEl.textContent = 'Something went wrong. Please try again or contact us directly.';
+        }
+      });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battersea K9 — Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #1C3A2B;
+    --green:    #2D6A4F;
+    --sage:     #7DBF6E;
+    --mint:     #A8C5A0;
+    --cream:    #F5F0E8;
+    --offwhite: #FAF8F3;
+    --charcoal: #2A2A2A;
+    --muted:    #5A5A5A;
+    --border:   rgba(28,58,43,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--offwhite); color: var(--charcoal); overflow-x: hidden; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(245,240,232,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(28,58,43,0.1); }
+
+  .nav-inner {
+    max-width: 1300px; margin: 0 auto; padding: 0 2rem;
+    height: 72px; display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem;
+    color: var(--forest); text-decoration: none;
+    display: flex; align-items: center; gap: 0.4rem; letter-spacing: -0.5px;
+  }
+  .logo em { font-style: italic; color: var(--green); }
+
+  .nav-links { list-style: none; display: flex; align-items: center; gap: 2.5rem; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.3px; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--forest); }
+  .nav-links a[aria-current="page"] { color: var(--forest); font-weight: 600; }
+
+  .nav-cta {
+    background: var(--forest) !important; color: var(--cream) !important;
+    padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--green) !important; transform: translateY(-1px); }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px; background: none; border: none;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--forest); border-radius: 2px; }
+
+  /* PAGE HERO */
+  .page-hero {
+    margin-top: 72px;
+    background: var(--forest);
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute; width: 500px; height: 500px;
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.05);
+    top: -150px; right: -100px;
+  }
+  .page-hero-bg-paw {
+    position: absolute; font-size: 380px; color: rgba(255,255,255,0.025);
+    right: -20px; bottom: -60px; line-height: 1; pointer-events: none;
+  }
+  .page-hero-inner {
+    max-width: 1300px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  .page-hero-overline {
+    font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--mint); margin-bottom: 1rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .page-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; line-height: 1.05; color: var(--cream);
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .page-hero-title em { font-style: italic; color: var(--sage); }
+  .page-hero-sub {
+    font-size: 1.1rem; font-weight: 300; line-height: 1.7;
+    color: rgba(245,240,232,0.6); max-width: 500px; margin-top: 1rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 1rem; margin: 0 2rem; }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-paw { font-size: 1rem; opacity: 0.4; }
+
+  /* GALLERY SECTION */
+  .gallery-section { padding: 5rem 2rem; }
+  .gallery-inner { max-width: 1300px; margin: 0 auto; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .tile {
+    border-radius: 14px; overflow: hidden;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+  }
+  .tile img {
+    width: 100%; aspect-ratio: 1;
+    object-fit: cover; display: block;
+    transition: transform 0.3s;
+  }
+  .tile:hover img { transform: scale(1.04); }
+  .tile-overlay {
+    position: absolute; inset: 0;
+    background: rgba(28,58,43,0);
+    transition: background 0.3s;
+    display: flex; align-items: flex-end;
+    padding: 1rem;
+  }
+  .tile:hover .tile-overlay { background: rgba(28,58,43,0.35); }
+  .tile-caption {
+    font-size: 0.82rem; font-weight: 500; color: var(--cream);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s;
+    line-height: 1.3;
+  }
+  .tile:hover .tile-caption { opacity: 1; transform: translateY(0); }
+
+  /* Empty tile placeholder */
+  .tile-empty {
+    border-radius: 14px;
+    background: var(--cream);
+    border: 1.5px dashed var(--border);
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+    color: rgba(28,58,43,0.2);
+  }
+  .tile-empty span { font-size: 1.5rem; }
+  .tile-empty small { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+
+  /* FOOTER */
+  footer {
+    background: #111e17; padding: 2rem; text-align: center;
+    font-size: 0.85rem; color: rgba(245,240,232,0.3); letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(10,20,14,0.88);
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 2000; padding: 1.5rem;
+  }
+  .lightbox.open { display: flex; }
+
+  .lightbox-panel {
+    width: min(1000px, 94vw);
+    max-height: 90vh;
+    position: relative;
+    border-radius: 20px; overflow: hidden;
+    background: rgba(28,58,43,0.5);
+    border: 1px solid rgba(245,240,232,0.1);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
+  }
+
+  .lightbox-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.2rem; gap: 1rem;
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+  }
+  .lb-meta { display: flex; flex-direction: column; gap: 0.1rem; }
+  .lb-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--cream); }
+  .lb-count { font-size: 0.8rem; color: var(--mint); letter-spacing: 1px; }
+
+  .lb-close {
+    background: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.15);
+    color: var(--cream); padding: 0.5rem 1rem; border-radius: 50px;
+    cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .lb-close:hover { background: rgba(245,240,232,0.2); }
+
+  .lightbox-image-wrap {
+    flex: 1; display: grid; place-items: center; padding: 1rem; overflow: hidden;
+  }
+  .lightbox-image-wrap img {
+    max-width: 100%; max-height: calc(90vh - 80px);
+    width: auto; height: auto;
+    border-radius: 12px; display: block;
+  }
+
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.15);
+    color: var(--cream); cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s; z-index: 10;
+  }
+  .lb-nav:hover { background: rgba(245,240,232,0.22); }
+  .lb-prev { left: 1rem; }
+  .lb-next { right: 1rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* CROP HELPERS */
+  .crop-luigi { object-position: center 90%; }
+  .crop-lyla  { object-position: center 40%; }
+
+  /* MOBILE */
+  @media (max-width: 968px) {
+    .nav-links {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: rgba(245,240,232,0.98); backdrop-filter: blur(12px);
+      flex-direction: column; align-items: flex-start;
+      padding: 1.5rem 2rem 2rem; gap: 1.25rem;
+      box-shadow: 0 20px 40px rgba(28,58,43,0.12); z-index: 999;
+    }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-hero { padding: 3.5rem 1.5rem; }
+    .gallery-section { padding: 3rem 1.5rem; }
+  }
+  @media (max-width: 400px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🐾 Battersea <em>K9</em></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#daycare">Daycare</a></li>
+      <li><a href="index.html#training">Training</a></li>
+      <li><a href="index.html#catchment">Service Area</a></li>
+      <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg-paw">🐾</div>
+  <div class="page-hero-inner">
+    <div class="page-hero-overline">Happy moments</div>
+    <h1 class="page-hero-title">Life at<br><em>Battersea K9</em></h1>
+    <p class="page-hero-sub">Real moments from daycare, walks, training, and everything in between.</p>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="gallery-inner">
+    <div class="gallery-grid reveal" id="galleryGrid">
+
+      <!-- Real photos -->
+      <div class="tile">
+        <picture>
+          <source srcset="images/echo-lyla.webp" type="image/webp">
+          <img src="images/echo-lyla.JPG" alt="Echo and Lyla playing" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Echo and Lyla playing</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/jeff.webp" type="image/webp">
+          <img src="images/jeff.JPG" alt="Baby Jeff ready for a walk" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Baby Jeff ready for a walk</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/callie-relaxing.webp" type="image/webp">
+          <img src="images/callie-relaxing.JPG" alt="Callie relaxing in the sunlight" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Callie relaxing in the sunlight</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/luigi.webp" type="image/webp">
+          <img src="images/luigi.JPG" alt="Luigi after a good night's rest" class="crop-luigi" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Luigi after a good night's rest</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/joy.webp" type="image/webp">
+          <img src="images/joy.JPG" alt="Joy asking for cuddles" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Joy asking for cuddles</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/puplyla.webp" type="image/webp">
+          <img src="images/puplyla.JPG" alt="Pup Lyla" class="crop-lyla" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Pup Lyla</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/callie-luigi.webp" type="image/webp">
+          <img src="images/callie-luigi.jpg" alt="Callie and Luigi together" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Callie and Luigi</div></div>
+      </div>
+      <div class="tile">
+        <picture>
+          <source srcset="images/lyla-cardiff.webp" type="image/webp">
+          <img src="images/lyla-cardiff.JPG" alt="Lyla on an adventure" loading="lazy">
+        </picture>
+        <div class="tile-overlay"><div class="tile-caption">Lyla on an adventure</div></div>
+      </div>
+
+      <!-- Placeholder slots — replace src="" with real images as you add them -->
+      <div class="tile-empty"><span>🐾</span><small>Coming soon</small></div>
+      <div class="tile-empty"><span>🐾</span><small>Coming soon</small></div>
+      <div class="tile-empty"><span>🐾</span><small>Coming soon</small></div>
+      <div class="tile-empty"><span>🐾</span><small>Coming soon</small></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>🐾</span>
+  <span>&copy; 2026 Battersea K9. Photos shared with owner permission.</span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <div class="lightbox-topbar">
+      <div class="lb-meta">
+        <div class="lb-title" id="lbTitle">Photo</div>
+        <div class="lb-count" id="lbCount"></div>
+      </div>
+      <button class="lb-close" id="lbClose" type="button">Close ✕</button>
+    </div>
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous">‹</button>
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next">›</button>
+    <div class="lightbox-image-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+  </div>
+</div>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Lightbox — only real tiles (not placeholders)
+  const tiles = Array.from(document.querySelectorAll('.tile img'));
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lbImg');
+  const lbTitle  = document.getElementById('lbTitle');
+  const lbCount  = document.getElementById('lbCount');
+  let index = 0;
+
+  function openLightbox(i) {
+    index = i;
+    const img = tiles[index];
+    lbImg.src = img.src;
+    lbImg.alt = img.alt || 'Photo';
+    lbTitle.textContent = img.alt || 'Photo';
+    lbCount.textContent = `${index + 1} of ${tiles.length}`;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  tiles.forEach((img, i) => {
+    img.parentElement.addEventListener('click', () => openLightbox(i));
+    img.setAttribute('tabindex', '0');
+    img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(i); });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbNext').addEventListener('click', () => { index = (index + 1) % tiles.length; openLightbox(index); });
+  document.getElementById('lbPrev').addEventListener('click', () => { index = (index - 1 + tiles.length) % tiles.length; openLightbox(index); });
+
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  window.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowRight') { index = (index + 1) % tiles.length; openLightbox(index); }
+    if (e.key === 'ArrowLeft')  { index = (index - 1 + tiles.length) % tiles.length; openLightbox(index); }
+  });
+</script>
+</body>
+</html>

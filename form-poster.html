@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dog Owners of London - Survey Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    padding: 40px 20px;
+  }
+
+  .poster {
+    width: 595px;
+    min-height: 842px;
+    background: #F5F0E8;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+
+  /* Top accent bar */
+  .top-bar {
+    height: 8px;
+    background: linear-gradient(90deg, #1C3A2B, #2D6A4F, #1C3A2B);
+  }
+
+  /* Header section */
+  .header {
+    background: #1C3A2B;
+    padding: 40px 50px 35px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: #1C3A2B;
+    clip-path: ellipse(55% 100% at 50% 0%);
+  }
+
+  .overline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #A8C5A0;
+    margin-bottom: 14px;
+  }
+
+  .main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1.0;
+    color: #F5F0E8;
+    margin-bottom: 6px;
+  }
+
+  .main-title span {
+    color: #7DBF6E;
+    display: block;
+    font-size: 42px;
+    font-weight: 700;
+  }
+
+  .subtitle-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .subtitle-line .line {
+    flex: 1;
+    height: 1px;
+    background: rgba(245,240,232,0.2);
+  }
+
+  .subtitle-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase;
+  }
+
+  /* Dog paw decoration */
+  .paw-section {
+    padding: 50px 50px 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .paw-icon {
+    font-size: 60px;
+    line-height: 1;
+    opacity: 0.15;
+    position: absolute;
+    right: 40px;
+    top: 175px;
+  }
+
+  /* Main call to action */
+  .cta-section {
+    padding: 0 50px;
+    flex: 1;
+  }
+
+  .headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1C3A2B;
+    margin-bottom: 22px;
+  }
+
+  .headline em {
+    font-style: italic;
+    color: #2D6A4F;
+  }
+
+  .body-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #3D3D3D;
+    max-width: 380px;
+    margin-bottom: 30px;
+  }
+
+  /* Divider with dog */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 50px;
+    margin: 25px 0;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1.5px;
+    background: #2D6A4F;
+    opacity: 0.25;
+  }
+
+  .divider-icon {
+    font-size: 22px;
+  }
+
+  /* QR section */
+  .qr-section {
+    padding: 0 50px 30px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+  }
+
+  .qr-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .qr-frame {
+    background: white;
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(28,58,43,0.15);
+    border: 2px solid #2D6A4F;
+  }
+
+  .qr-frame img {
+    width: 140px;
+    height: 140px;
+    display: block;
+  }
+
+  .qr-label {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #2D6A4F;
+    margin-top: 8px;
+  }
+
+  .qr-info {
+    flex: 1;
+  }
+
+  .scan-prompt {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1C3A2B;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .scan-prompt em {
+    font-style: italic;
+    color: #2D6A4F;
+  }
+
+  .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #2D6A4F;
+    color: #F5F0E8;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+
+  .benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .benefit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #3D3D3D;
+  }
+
+  .benefit-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7DBF6E;
+    flex-shrink: 0;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    background: #1C3A2B;
+    padding: 18px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .bottom-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .london-icon {
+    font-size: 18px;
+    opacity: 0.6;
+  }
+
+  /* Background decorative elements */
+  .bg-circle-1 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    border: 1px solid rgba(45,106,79,0.07);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .bg-circle-2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(45,106,79,0.07);
+    bottom: 200px;
+    left: -60px;
+    pointer-events: none;
+  }
+
+  /* Large background paw print */
+  .bg-paw {
+    position: absolute;
+    font-size: 280px;
+    color: #2D6A4F;
+    opacity: 0.03;
+    right: -40px;
+    top: 280px;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .poster { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+  <div class="bg-paw">🐾</div>
+
+  <div class="top-bar"></div>
+
+  <div class="header">
+    <div class="overline">Calling all dog owners</div>
+    <div class="main-title">
+      Dog Owners
+      <span>of London</span>
+    </div>
+    <div class="subtitle-line">
+      <div class="line"></div>
+      <div class="subtitle-text">We want to hear from you</div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <div style="height: 45px;"></div>
+
+  <div class="cta-section">
+    <div class="headline">
+      Help shape the future<br>of <em>dog daycare</em><br>in London.
+    </div>
+
+    <p class="body-text">
+      We're conducting a short survey to better understand the experiences and challenges of current dog walking and daycare services in London. Your voice matters - and it only takes 5 minutes.
+    </p>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-icon">🐾</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="qr-section">
+    <div class="qr-wrapper">
+      <div class="qr-frame">
+        <img src ='k9-qrcode.png' alt='QR Code to survey'>
+      </div>
+      <div class="qr-label">Scan to take part</div>
+    </div>
+
+    <div class="qr-info">
+      <div class="scan-prompt">
+        Scan the code<br>to <em>take part</em> today
+      </div>
+      <div class="time-badge">
+        ⏱ Only 5 minutes
+      </div>
+      <div class="benefits">
+        <div class="benefit"><div class="benefit-dot"></div>Completely anonymous</div>
+        <div class="benefit"><div class="benefit-dot"></div>Open to all London dog owners</div>
+        <div class="benefit"><div class="benefit-dot"></div>Results shape real policy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-text">Imperial College London · 2026</div>
+<!--    <div class="london-icon">🏙️</div>-->
+<!--    <div class="bottom-text">Powered by community voices</div>-->
+  </div>
+</div>
+</body>
+</html>

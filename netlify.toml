@@ -1,0 +1,14 @@
+[build]
+  publish = "."
+
+# Serve WebP to browsers that support it
+[[headers]]
+  for = "/images/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type  = "image/webp"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
