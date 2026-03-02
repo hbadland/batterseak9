@@ -125,9 +125,12 @@
 
   .hero-image { position: relative; animation: fadeIn 1s ease 0.4s both; }
   .hero-image-frame {
-    width: 100%; aspect-ratio: 4/5; border-radius: 16px; display: block;
-    background: image-set(url('images/bella.webp') type('image/webp'), url('images/bella.jpg') type('image/jpeg')) center/cover no-repeat;
-    background-color: var(--green);
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 16px;
+    display: block;
   }
 
   /* SECTIONS */
@@ -331,7 +334,7 @@
       </div>
     </div>
     <div class="hero-image">
-      <div class="hero-image-frame"></div>
+      <img src="images/bella.webp" alt="Dog" class="hero-image-frame">
     </div>
   </div>
 </section>
