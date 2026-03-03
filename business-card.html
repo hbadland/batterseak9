@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battersea K9 — Business Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest:   #1C3A2B;
+      --green:    #2D6A4F;
+      --sage:     #7DBF6E;
+      --mint:     #A8C5A0;
+      --cream:    #F5F0E8;
+      --muted:    #5A5A5A;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #DEDAD2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 40px;
+      gap: 56px;
+    }
+
+    .page-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    /* ─── Layout ─── */
+    .cards-row {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .card-side-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #AAA;
+    }
+
+    /* ─── Card base — 85:55 ratio at 8px/mm ─── */
+    .card {
+      width: 680px;
+      height: 440px;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.06),
+        0 8px 24px rgba(0,0,0,0.10),
+        0 24px 56px rgba(0,0,0,0.14);
+    }
+
+    /* ═══════════════════════════════
+       FRONT
+    ═══════════════════════════════ */
+    .card-front {
+      background: var(--forest);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 52px 56px;
+    }
+
+    /* Ghost paw — texture, top-right */
+    .front-ghost {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      opacity: 0.055;
+    }
+
+    /* Small accent paw above name */
+    .front-mark {
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .front-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 0.95;
+      letter-spacing: -0.5px;
+      margin-bottom: 22px;
+    }
+
+    .front-name em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .front-rule {
+      width: 36px;
+      height: 1px;
+      background: rgba(245,240,232,0.22);
+      margin-bottom: 16px;
+    }
+
+    .front-tagline {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--mint);
+    }
+
+    /* ═══════════════════════════════
+       BACK
+    ═══════════════════════════════ */
+    .card-back {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 52px 56px;
+    }
+
+    .back-top {}
+
+    .back-person-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--forest);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .back-role {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    .back-rule {
+      width: 100%;
+      height: 1px;
+      background: rgba(28,58,43,0.12);
+      margin: 28px 0;
+    }
+
+    .back-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .back-contact-item {
+      font-size: 11.5px;
+      font-weight: 400;
+      color: #3A3A3A;
+      line-height: 1;
+      letter-spacing: 0.1px;
+    }
+
+    .back-contact-item.web {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    /* Bottom row */
+    .back-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .back-location {
+      font-size: 9.5px;
+      font-weight: 400;
+      color: #999;
+      letter-spacing: 0.3px;
+    }
+
+    .back-ghost {
+      opacity: 0.07;
+    }
+
+    /* ─── Print note ─── */
+    .print-note {
+      font-size: 10.5px;
+      color: #AAA;
+      letter-spacing: 0.3px;
+      text-align: center;
+      line-height: 2;
+    }
+    .print-note strong {
+      color: #888;
+      font-weight: 600;
+    }
+
+    @media print {
+      body { background: white; padding: 0; gap: 0; justify-content: flex-start; }
+      .page-title, .card-side-label, .print-note { display: none; }
+      .cards-row { flex-direction: column; gap: 20mm; padding: 10mm; }
+      .card { box-shadow: none; border: 0.3mm solid rgba(0,0,0,0.08); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-title">Battersea K9 &mdash; Business Card</div>
+
+  <div class="cards-row">
+
+    <!-- ───── FRONT ───── -->
+    <div class="card-wrap">
+      <div class="card-side-label">Front</div>
+      <div class="card card-front">
+
+        <!-- Ghost paw watermark -->
+        <svg class="front-ghost" width="320" height="320" viewBox="0 0 100 100" fill="var(--sage)">
+          <ellipse cx="32" cy="38" rx="9" ry="11"/>
+          <ellipse cx="68" cy="38" rx="9" ry="11"/>
+          <ellipse cx="42" cy="26" rx="9" ry="11"/>
+          <ellipse cx="58" cy="26" rx="9" ry="11"/>
+          <ellipse cx="50" cy="60" rx="20" ry="17"/>
+        </svg>
+
+        <!-- Bottom-left content -->
+        <svg class="front-mark" width="22" height="22" viewBox="0 0 100 100" fill="var(--sage)">
+          <ellipse cx="32" cy="38" rx="9" ry="11"/>
+          <ellipse cx="68" cy="38" rx="9" ry="11"/>
+          <ellipse cx="42" cy="26" rx="9" ry="11"/>
+          <ellipse cx="58" cy="26" rx="9" ry="11"/>
+          <ellipse cx="50" cy="60" rx="20" ry="17"/>
+        </svg>
+
+        <div class="front-name">Battersea <em>K9</em></div>
+        <div class="front-rule"></div>
+        <div class="front-tagline">Bespoke Canine Services &nbsp;&middot;&nbsp; Battersea &amp; Chelsea</div>
+
+      </div>
+    </div>
+
+    <!-- ───── BACK ───── -->
+    <div class="card-wrap">
+      <div class="card-side-label">Back</div>
+      <div class="card card-back">
+
+        <div class="back-top">
+          <div class="back-person-name">Jack</div>
+          <div class="back-role">Founder &amp; Head Trainer</div>
+          <div class="back-rule"></div>
+          <div class="back-contact">
+            <div class="back-contact-item">+44 7599 940 282</div>
+            <div class="back-contact-item">hello@batterseak9.com</div>
+            <div class="back-contact-item web">batterseak9.com</div>
+          </div>
+        </div>
+
+        <div class="back-bottom">
+          <div class="back-location">Battersea &amp; Chelsea &nbsp;&middot;&nbsp; SW London</div>
+          <svg class="back-ghost" width="44" height="44" viewBox="0 0 100 100" fill="var(--forest)">
+            <ellipse cx="32" cy="38" rx="9" ry="11"/>
+            <ellipse cx="68" cy="38" rx="9" ry="11"/>
+            <ellipse cx="42" cy="26" rx="9" ry="11"/>
+            <ellipse cx="58" cy="26" rx="9" ry="11"/>
+            <ellipse cx="50" cy="60" rx="20" ry="17"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="print-note">
+    Standard <strong>85 &times; 55mm</strong> &nbsp;&middot;&nbsp;
+    Print at <strong>300dpi</strong> with <strong>3mm bleed</strong> &nbsp;&middot;&nbsp;
+    Recommended: Moo.com, Printed.com, or local printer on 400gsm soft-touch laminate
+  </div>
+
+</body>
+</html>
