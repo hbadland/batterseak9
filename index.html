@@ -85,48 +85,66 @@
   /* NAV */
   nav {
     position: fixed; top: 0; width: 100%; z-index: 1000;
-    background: rgba(245,240,232,0.97);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: box-shadow 0.3s;
+    padding: 10px 1.5rem 0;
   }
-  nav.scrolled { box-shadow: 0 4px 30px rgba(28,58,43,0.1); }
-
   .nav-inner {
-    max-width: 1300px; margin: 0 auto; padding: 0 2rem;
-    height: 72px; display: flex; align-items: center; justify-content: space-between;
+    max-width: 1280px; margin: 0 auto; padding: 0 2rem;
+    height: 66px; display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid transparent; border-radius: 0;
+    transition: max-width 0.4s cubic-bezier(0.4,0,0.2,1),
+                background 0.35s ease, border-radius 0.4s ease,
+                box-shadow 0.35s ease, padding 0.35s ease, border-color 0.35s ease;
+  }
+  nav.scrolled .nav-inner {
+    max-width: 980px;
+    background: rgba(245,240,232,0.88);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border-radius: 20px;
+    border-color: rgba(28,58,43,0.12);
+    padding: 0 1.75rem;
+    box-shadow: 0 4px 30px rgba(28,58,43,0.1);
   }
 
+  /* Default state: cream text readable on dark hero */
   .logo {
     font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.5rem;
-    color: var(--forest); text-decoration: none;
+    color: var(--cream); text-decoration: none;
     display: flex; align-items: center; gap: 0.4rem; letter-spacing: -0.5px;
+    transition: color 0.35s ease;
   }
-  .logo em { font-style: italic; color: var(--green); }
+  .logo em { font-style: italic; color: var(--sage); transition: color 0.35s ease; }
+  nav.scrolled .logo { color: var(--forest); }
+  nav.scrolled .logo em { color: var(--green); }
 
   .nav-links { list-style: none; display: flex; align-items: center; gap: 2rem; }
   .nav-links a {
     text-decoration: none; font-size: 0.9rem; font-weight: 500;
-    color: var(--muted); letter-spacing: 0.3px; transition: color 0.2s;
+    color: rgba(245,240,232,0.82); letter-spacing: 0.3px; transition: color 0.3s;
   }
-  .nav-links a:hover { color: var(--forest); }
+  .nav-links a:hover { color: var(--cream); }
+  nav.scrolled .nav-links a { color: var(--muted); }
+  nav.scrolled .nav-links a:hover { color: var(--forest); }
 
   .nav-cta {
-    background: var(--forest) !important; color: var(--cream) !important;
+    background: rgba(125,191,110,0.15) !important; color: var(--cream) !important;
+    border: 1px solid rgba(125,191,110,0.4) !important;
     padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600 !important;
-    transition: background 0.2s, transform 0.2s !important;
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.2s !important;
   }
-  .nav-cta:hover { background: var(--green) !important; transform: translateY(-1px); }
+  .nav-cta:hover { background: rgba(125,191,110,0.28) !important; transform: translateY(-1px); }
+  nav.scrolled .nav-cta { background: var(--forest) !important; border-color: transparent !important; }
+  nav.scrolled .nav-cta:hover { background: var(--green) !important; }
 
   .hamburger {
     display: none; flex-direction: column; gap: 5px;
     cursor: pointer; padding: 4px; background: none; border: none;
   }
-  .hamburger span { display: block; width: 24px; height: 2px; background: var(--forest); border-radius: 2px; transition: all 0.3s; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: rgba(245,240,232,0.9); border-radius: 2px; transition: all 0.3s; }
+  nav.scrolled .hamburger span { background: var(--forest); }
 
   /* HERO */
   .hero {
-    margin-top: 72px; min-height: calc(100vh - 72px);
+    margin-top: 76px; min-height: calc(100vh - 76px);
     background: var(--forest); position: relative; overflow: hidden; display: flex; align-items: center;
   }
   .hero::before {
@@ -139,7 +157,8 @@
     border-radius: 50%; border: 1px solid rgba(255,255,255,0.04);
     bottom: -100px; left: -80px;
   }
-  .logo-paw { fill: var(--green); flex-shrink: 0; }
+  .logo-paw { fill: var(--sage); flex-shrink: 0; transition: fill 0.35s ease; }
+  nav.scrolled .logo-paw { fill: var(--green); }
   .hero-inner {
     max-width: 1300px; margin: 0 auto; padding: 5rem 2rem;
     display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
@@ -393,8 +412,8 @@
   /* MOBILE */
   @media (max-width: 968px) {
     .nav-links {
-      display: none; position: fixed; top: 72px; left: 0; right: 0;
-      background: rgba(245,240,232,0.98); backdrop-filter: blur(12px);
+      display: none; position: fixed; top: 76px; left: 0; right: 0;
+      background: rgba(245,240,232,0.98); backdrop-filter: blur(18px);
       flex-direction: column; align-items: flex-start;
       padding: 1.5rem 2rem 2rem; gap: 1.25rem;
       box-shadow: 0 20px 40px rgba(28,58,43,0.12); z-index: 999;
