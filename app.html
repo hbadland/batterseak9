@@ -273,12 +273,12 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--dark4); border-radius: 2px; }
 
-/* Mobile: remove body padding so the 393px frame doesn't overflow */
+/* Mobile: remove body padding so the 393px frame doesn't overflow (standalone only, not embed) */
 @media (max-width: 440px) {
-  body { padding-left: 0; padding-right: 0; }
-  .iphone { border-radius: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; height: 100vh; height: 100dvh; }
-  .dynamic-island { display: none; }
-  .screen-nav { flex-wrap: wrap; justify-content: center; padding: 0 12px; }
+  html:not(.embed) body { padding-left: 0; padding-right: 0; }
+  html:not(.embed) .iphone { border-radius: 0; border: none; box-shadow: none; width: 100%; max-width: 100%; height: 100vh; height: 100dvh; }
+  html:not(.embed) .dynamic-island { display: none; }
+  html:not(.embed) .screen-nav { flex-wrap: wrap; justify-content: center; padding: 0 12px; }
 }
 
 /* Embed mode — strip chrome so iframe fits flush inside index.html phone frame */
