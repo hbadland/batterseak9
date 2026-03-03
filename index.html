@@ -3,7 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Battersea K9: Bespoke Canine Services</title>
+<title>Battersea K9: Bespoke Dog Daycare &amp; Training in South West London</title>
+<meta name="description" content="Battersea K9 offers bespoke dog daycare, training and boarding in Battersea and Chelsea. Small numbers, doorstep collection, flexible packages. A personal local alternative to big daycare centres.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.batterseak9.com/">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.svg">
+
+<!-- Open Graph (WhatsApp, Facebook, LinkedIn previews) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.batterseak9.com/">
+<meta property="og:title" content="Battersea K9: Bespoke Dog Daycare &amp; Training in South West London">
+<meta property="og:description" content="A personal, local alternative to big daycare centres. Doorstep collection, flexible packages, and professional training in Battersea and Chelsea.">
+<meta property="og:image" content="https://www.batterseak9.com/images/bella-2.webp">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Battersea K9">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Battersea K9: Bespoke Dog Daycare &amp; Training in South West London">
+<meta name="twitter:description" content="A personal, local alternative to big daycare centres. Doorstep collection, flexible packages, and professional training in Battersea and Chelsea.">
+<meta name="twitter:image" content="https://www.batterseak9.com/images/bella-2.webp">
+
+<!-- LocalBusiness structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Battersea K9",
+  "description": "Bespoke dog daycare, training and boarding in Battersea and Chelsea, South West London.",
+  "url": "https://www.batterseak9.com",
+  "telephone": "+447599940282",
+  "email": "hello@batterseak9.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Battersea",
+    "addressRegion": "London",
+    "addressCountry": "GB"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 51.4815,
+    "longitude": -0.1478
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "08:00",
+    "closes": "20:00"
+  },
+  "image": "https://www.batterseak9.com/images/bella-2.webp",
+  "priceRange": "££",
+  "areaServed": ["Battersea", "Chelsea", "Clapham", "Wandsworth", "South West London"]
+}
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -219,23 +275,44 @@
   }
   .btn-secondary:hover { background: var(--forest); color: var(--cream); transform: translateY(-2px); }
 
-  /* COMING SOON */
+  /* APP SECTION */
   #coming-soon { background: var(--offwhite); }
-  .coming-header { margin-bottom: 4rem; }
-  .coming-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .coming-card {
-    background: var(--cream); border: 1px solid var(--border); border-radius: 16px;
-    padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.3s;
-  }
-  .coming-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(28,58,43,0.1); }
-  .coming-badge {
+  .app-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .app-badge {
     display: inline-block; background: var(--forest); color: var(--mint);
     font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem;
+    padding: 0.35rem 1rem; border-radius: 50px; margin-bottom: 1.5rem;
   }
-  .coming-icon { font-size: 2rem; margin-bottom: 0.75rem; line-height: 1; }
-  .coming-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--forest); margin-bottom: 0.75rem; }
-  .coming-text { font-size: 0.95rem; line-height: 1.75; color: var(--muted); }
+  .app-features { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin-top: 2.5rem; }
+  .app-features li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: var(--cream); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.3rem; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .app-features li:hover { transform: translateX(6px); box-shadow: 0 4px 20px rgba(28,58,43,0.08); }
+  .app-feat-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.6; }
+  .app-feat-title { font-weight: 600; color: var(--forest); font-size: 0.9rem; display: block; }
+  .app-feat-desc { font-size: 0.85rem; color: var(--muted); }
+  .app-phone-col { display: flex; justify-content: center; align-items: center; }
+  .app-phone-frame {
+    width: 310px; height: 671px;
+    background: #0A0908; border-radius: 46px;
+    border: 10px solid #1C1A18;
+    box-shadow: 0 0 0 2px #3A3530, 0 0 0 3.5px #0A0908, 0 40px 80px rgba(0,0,0,0.45), 0 0 60px rgba(28,58,43,0.2);
+    overflow: hidden; position: relative; flex-shrink: 0;
+  }
+  .app-phone-frame::before {
+    content: '';
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 85px; height: 24px; background: #000; border-radius: 12px; z-index: 10; pointer-events: none;
+  }
+  .app-phone-frame iframe {
+    width: 393px; height: 852px;
+    border: none;
+    transform: scale(0.789);
+    transform-origin: top left;
+    pointer-events: all;
+  }
 
   /* REVIEWS */
   #reviews { background: var(--cream); }
@@ -336,7 +413,9 @@
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
     .form-row { grid-template-columns: 1fr; }
     .daycare-header, .gallery-header, .reviews-intro { flex-direction: column; align-items: flex-start; }
-    .coming-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .app-layout { grid-template-columns: 1fr; }
+    .app-phone-col { order: -1; }
     section { padding: 5rem 1.5rem; }
   }
   @media (max-width: 640px) {
@@ -508,32 +587,42 @@
 
 <div class="divider"><div class="divider-line"></div><div class="divider-paw">🐾</div><div class="divider-line"></div></div>
 
-<!-- COMING SOON -->
+<!-- APP SECTION -->
 <section id="coming-soon">
   <div class="section-inner">
-    <div class="coming-header reveal">
-      <div class="section-label">What's next</div>
-      <h2 class="section-title">Coming <em>Soon</em></h2>
-      <p class="section-desc">We are always working to bring more to our clients. Here is a look at what we are building next at Battersea K9.</p>
-    </div>
-    <div class="coming-grid">
-      <div class="coming-card reveal">
-        <div class="coming-icon">🌙</div>
-        <div class="coming-badge">Coming Soon</div>
-        <div class="coming-title">Overnight Boarding</div>
-        <p class="coming-text">A home away from home for your dog, with overnight care in a safe, comfortable and familiar setting.</p>
+    <div class="app-layout">
+      <div class="reveal">
+        <div class="app-badge">Coming Soon</div>
+        <div class="section-label">The K9 App</div>
+        <h2 class="section-title">Your dog's day,<br>in your <em>pocket.</em></h2>
+        <p class="section-desc">We're building an app to bring you closer to your dog's day — live tracking, easy booking, and real-time updates, all in one place.</p>
+        <ul class="app-features">
+          <li>
+            <span class="app-feat-icon">📍</span>
+            <span><strong class="app-feat-title">Live walk tracking</strong><span class="app-feat-desc">Watch your dog's walk unfold on the map in real time.</span></span>
+          </li>
+          <li>
+            <span class="app-feat-icon">📅</span>
+            <span><strong class="app-feat-title">Easy booking</strong><span class="app-feat-desc">Book daycare, training or walks in a few taps, whenever you need.</span></span>
+          </li>
+          <li>
+            <span class="app-feat-icon">📸</span>
+            <span><strong class="app-feat-title">Daily photo updates</strong><span class="app-feat-desc">Receive photos and clips from your dog's day, straight to your phone.</span></span>
+          </li>
+          <li>
+            <span class="app-feat-icon">💳</span>
+            <span><strong class="app-feat-title">Credits wallet</strong><span class="app-feat-desc">Buy session packs, track your balance, and manage payments easily.</span></span>
+          </li>
+          <li>
+            <span class="app-feat-icon">🔔</span>
+            <span><strong class="app-feat-title">Instant notifications</strong><span class="app-feat-desc">Get alerts for pickups, drop-offs, and any updates from your carer.</span></span>
+          </li>
+        </ul>
       </div>
-      <div class="coming-card reveal" style="transition-delay:0.1s">
-        <div class="coming-icon">🐶</div>
-        <div class="coming-badge">Coming Soon</div>
-        <div class="coming-title">Puppy Socialisation Groups</div>
-        <p class="coming-text">Structured play sessions for puppies aged 8 to 16 weeks to build confidence, social skills, and a love of other dogs from the very start.</p>
-      </div>
-      <div class="coming-card reveal" style="transition-delay:0.2s">
-        <div class="coming-icon">🌳</div>
-        <div class="coming-badge">Coming Soon</div>
-        <div class="coming-title">Group Walks</div>
-        <p class="coming-text">Sociable, off-lead walks through the parks and green spaces of South West London, with dogs who know and trust each other.</p>
+      <div class="app-phone-col reveal" style="transition-delay:0.2s">
+        <div class="app-phone-frame">
+          <iframe src="app.html?embed" title="Battersea K9 App Preview" scrolling="no" loading="lazy"></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -587,7 +676,7 @@
       </div>
     </div>
     <div class="reviews-cta reveal">
-      <a href="https://g.page/r/batterseak9/review" target="_blank" rel="noopener" class="google-badge">
+      <a href="https://g.page/r/CaActftl1WiIEBM/review" target="_blank" rel="noopener" class="google-badge">
         <span class="google-g">G</span> Read our Google Reviews
       </a>
     </div>
@@ -608,7 +697,7 @@
         <div class="contact-info-title">Get <em>in touch</em></div>
         <div class="contact-details">
           <div class="contact-item"><div class="contact-dot">📱</div><span>WhatsApp: +447599940282</span></div>
-          <div class="contact-item"><div class="contact-dot">✉️</div><span>Email: hello@batterseak9.co.uk</span></div>
+          <div class="contact-item"><div class="contact-dot">✉️</div><span>Email: hello@batterseak9.com</span></div>
           <div class="contact-item"><div class="contact-dot">🕐</div><span>Hours: Mon to Sun, 8AM to 8PM</span></div>
           <div class="contact-item"><div class="contact-dot">📍</div><span>Battersea &amp; Chelsea, London SW</span></div>
         </div>

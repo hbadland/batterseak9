@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battersea K9 — App Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5EED8;
+  --gold: #C9A84C;
+  --gold-light: #E8C96E;
+  --dark: #0E0D0B;
+  --dark2: #1A1916;
+  --dark3: #252420;
+  --dark4: #2F2D28;
+  --muted: #6B6660;
+  --text: #E8E0CC;
+  --text-dim: #9B9388;
+  --green: #4CAF7A;
+  --red: #E05C5C;
+  --blue: #4A80C4;
+  --amber: #E8A93A;
+}
+
+body {
+  background: #0A0908;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+
+.page-header { text-align: center; margin-bottom: 32px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--cream); margin-bottom: 6px; }
+.page-title span { color: var(--gold); font-style: italic; }
+.page-sub { color: var(--muted); font-size: 12px; letter-spacing: 0.5px; }
+
+.screen-nav { display: flex; gap: 8px; margin-bottom: 28px; }
+.screen-btn {
+  background: var(--dark3); border: 1px solid var(--dark4);
+  color: var(--text-dim); padding: 9px 20px; border-radius: 22px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.screen-btn.active { background: var(--gold); color: var(--dark); border-color: var(--gold); font-weight: 700; }
+
+.iphone {
+  width: 393px; height: 852px;
+  background: var(--dark); border-radius: 55px;
+  border: 11px solid #1C1A18; position: relative; overflow: hidden;
+  box-shadow: 0 0 0 1.5px #3A3530, 0 0 0 3px #111008, 0 50px 100px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.04);
+  flex-shrink: 0;
+}
+.dynamic-island {
+  position: absolute; top: 13px; left: 50%; transform: translateX(-50%);
+  width: 122px; height: 35px; background: #000; border-radius: 20px; z-index: 100;
+}
+.status-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 59px;
+  display: flex; align-items: flex-end; padding: 0 30px 10px;
+  justify-content: space-between; z-index: 50; pointer-events: none;
+  font-size: 12px; font-weight: 600; color: var(--text);
+}
+.status-time { font-size: 15px; font-weight: 700; }
+.status-icons { display: flex; gap: 5px; align-items: center; font-size: 11px; }
+
+.nav-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 88px;
+  background: rgba(14,13,11,0.97); backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-around;
+  padding-bottom: 18px; z-index: 40;
+}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 18px; border-radius: 14px; }
+.nav-icon { font-size: 23px; line-height: 1; }
+.nav-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.3px; }
+.nav-item.active .nav-label { color: var(--gold); }
+
+.screen { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--dark); overflow: hidden; }
+.screen.active { display: flex; }
+.safe-bottom { height: 88px; flex-shrink: 0; }
+
+
+
+/* ===== WALLET STRIP ===== */
+.wallet-strip { margin: 16px 20px 0; background: var(--dark3); border: 1px solid var(--dark4); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 16px; }
+.wallet-left { flex-shrink: 0; }
+.wallet-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 3px; }
+.wallet-val { font-size: 18px; font-weight: 700; color: var(--cream); }
+.wallet-val span { font-size: 11px; font-weight: 400; color: var(--text-dim); }
+.wallet-right { flex: 1; }
+.wallet-bar { height: 6px; background: var(--dark4); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+.wallet-bar-fill { height: 100%; width: 60%; background: linear-gradient(90deg, var(--gold-light), var(--gold)); border-radius: 3px; }
+.wallet-bar-sub { font-size: 11px; color: var(--text-dim); text-align: right; }
+
+/* ===== PURCHASE CARDS ===== */
+.purchase-cards { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.purchase-card { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 18px; padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.18s; position: relative; overflow: hidden; }
+.purchase-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px; }
+.pc-single::before { background: var(--blue); }
+.pc-bundle::before { background: var(--gold); }
+.pc-sub::before    { background: #A080D8; }
+.pc-left { display: flex; align-items: center; gap: 13px; }
+.pc-icon-wrap { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.pc-icon-single { background: rgba(74,128,196,0.15); }
+.pc-icon-bundle { background: rgba(201,168,76,0.15); }
+.pc-icon-sub    { background: rgba(160,128,216,0.15); }
+.pc-title { font-size: 14px; font-weight: 600; color: var(--cream); }
+.pc-desc  { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+.pc-arrow { font-size: 20px; color: var(--text-dim); padding-left: 8px; }
+.pc-badge-save { background: rgba(201,168,76,0.14); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 8px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+/* ===== PURCHASE BOTTOM SHEET ===== */
+.modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.65); z-index: 60; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.purchase-sheet { position: absolute; bottom: 0; left: 0; right: 0; background: var(--dark2); border-top-left-radius: 28px; border-top-right-radius: 28px; border-top: 1px solid rgba(255,255,255,0.07); padding: 14px 22px 32px; z-index: 70; transform: translateY(105%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
+.purchase-sheet.open { transform: translateY(0); }
+.ps-handle { width: 36px; height: 4px; background: var(--dark4); border-radius: 2px; margin: 0 auto 18px; }
+.ps-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.ps-icon { font-size: 28px; width: 50px; height: 50px; background: var(--dark3); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ps-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); }
+.ps-desc { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+.ps-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.ps-option { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 14px; padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.15s; }
+.ps-option.ps-selected { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+.ps-option-name { font-size: 13px; font-weight: 600; color: var(--cream); }
+.ps-option-detail { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.ps-option-right { text-align: right; }
+.ps-option-price { font-size: 16px; font-weight: 700; color: var(--gold); font-family: 'Playfair Display', serif; }
+.ps-option-saving { font-size: 10px; color: var(--green); margin-top: 2px; }
+.ps-cta { width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); border: none; border-radius: 16px; padding: 16px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
+.ps-cancel { width: 100%; background: transparent; border: none; color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; padding: 8px; }
+
+/* ===== HOME ===== */
+.home-bg { position: absolute; top: 0; left: 0; right: 0; height: 310px; background: linear-gradient(165deg, #1F1C14 0%, #131109 55%, var(--dark) 100%); pointer-events: none; }
+.home-paw-bg { position: absolute; top: 50px; right: -10px; font-size: 160px; opacity: 0.03; pointer-events: none; line-height: 1; }
+.home-content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 88px; }
+.home-hero-text { padding: 70px 28px 26px; }
+.home-greeting { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; opacity: 0.8; }
+.home-name { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--cream); line-height: 1.15; }
+.home-name em { color: var(--gold); font-style: italic; }
+
+.nwc { margin: 0 20px 4px; background: var(--dark3); border: 1px solid rgba(201,168,76,0.18); border-radius: 22px; padding: 20px; position: relative; overflow: hidden; }
+.nwc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); border-radius: 2px 2px 0 0; }
+.nwc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--gold); margin-bottom: 14px; opacity: 0.8; }
+.nwc-row { display: flex; align-items: center; gap: 14px; }
+.dog-av { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, var(--dark4), var(--dark2)); border: 2px solid rgba(201,168,76,0.35); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.nwc-info { flex: 1; }
+.nwc-dogname { font-size: 17px; font-weight: 600; color: var(--cream); }
+.nwc-when { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+.nwc-badge { background: rgba(76,175,122,0.13); color: var(--green); border: 1px solid rgba(76,175,122,0.28); padding: 5px 11px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.nwc-divider { height: 1px; background: var(--dark4); margin: 16px 0; }
+.nwc-meta { display: flex; justify-content: space-around; }
+.nwc-meta-item { text-align: center; }
+.nwc-meta-val { font-size: 15px; font-weight: 700; color: var(--cream); }
+.nwc-meta-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.tiles-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text-dim); padding: 20px 24px 12px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
+.tile { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 20px; padding: 20px 18px; cursor: pointer; transition: border-color 0.2s; position: relative; overflow: hidden; }
+.tile-accent { position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 2px 2px 0 0; }
+.tile-icon { font-size: 28px; margin-bottom: 12px; }
+.tile-title { font-size: 13px; font-weight: 600; color: var(--cream); }
+.tile-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; }
+
+
+/* ===== LIVE TRACKING ===== */
+.tracking-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.map-container { flex: 1; position: relative; overflow: hidden; }
+.map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.map-overlay-top {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+  padding: 62px 20px 20px;
+  background: linear-gradient(to bottom, rgba(14,13,11,0.90) 50%, transparent);
+  pointer-events: none;
+}
+.mot-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); margin-bottom: 5px; }
+.live-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(76,175,122,0.16); border: 1px solid rgba(76,175,122,0.32); padding: 4px 11px; border-radius: 10px; font-size: 11px; font-weight: 600; color: var(--green); }
+.live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 1.3s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+.dog-pin { position: absolute; z-index: 15; transform: translate(-50%,-50%); }
+.pin-pulse { position: absolute; inset: -14px; border: 2px solid rgba(201,168,76,0.35); border-radius: 50%; animation: pulse-out 2s ease-out infinite; }
+.pin-pulse2 { position: absolute; inset: -26px; border: 1px solid rgba(201,168,76,0.15); border-radius: 50%; animation: pulse-out 2s ease-out infinite 0.65s; }
+@keyframes pulse-out { 0%{transform:scale(0.7);opacity:1} 100%{transform:scale(1.3);opacity:0} }
+.pin-core { width: 50px; height: 50px; background: var(--gold); border: 3px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 18px rgba(201,168,76,0.55), 0 2px 6px rgba(0,0,0,0.3); position: relative; z-index: 2; }
+
+.home-pin { position: absolute; z-index: 14; transform: translate(-50%,-50%); }
+.home-pin-core { width: 32px; height: 32px; background: white; border: 2.5px solid var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; box-shadow: 0 2px 10px rgba(74,128,196,0.4); }
+
+.tracking-panel { background: var(--dark2); border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 14px 22px 0; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+.tp-handle { width: 36px; height: 4px; background: var(--dark4); border-radius: 2px; margin: 0 auto 16px; }
+.tp-dog-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.tp-dog-av { width: 44px; height: 44px; border-radius: 50%; background: var(--dark3); border: 2px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.tp-dog-info { flex: 1; }
+.tp-dog-name { font-size: 16px; font-weight: 600; color: var(--cream); }
+.tp-dog-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+.tp-walker-badge { background: var(--dark4); border-radius: 10px; padding: 6px 12px; font-size: 11px; color: var(--text-dim); text-align: center; }
+.tp-walker-badge strong { display: block; color: var(--cream); font-size: 13px; }
+
+.tp-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+.tp-stat { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 14px; padding: 12px 8px; text-align: center; }
+.tp-stat-icon { font-size: 16px; margin-bottom: 4px; }
+.tp-stat-val { font-size: 17px; font-weight: 700; color: var(--cream); }
+.tp-stat-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-top: 2px; }
+
+.eta-card { background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.04)); border: 1px solid rgba(201,168,76,0.2); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+.eta-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.eta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); }
+.eta-time { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); font-weight: 700; }
+.eta-note { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.eta-right { text-align: right; }
+.eta-pct { font-size: 22px; font-weight: 700; color: var(--cream); }
+.eta-pct-lbl { font-size: 10px; color: var(--text-dim); }
+.eta-progress-wrap { display: flex; align-items: center; gap: 10px; }
+.eta-progress-bar { flex: 1; height: 6px; background: var(--dark4); border-radius: 3px; overflow: hidden; }
+.eta-progress-fill { height: 100%; width: 65%; background: linear-gradient(90deg, var(--gold-light), var(--gold)); border-radius: 3px; }
+.eta-progress-start, .eta-progress-end { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
+
+
+/* ===== BOOKING ===== */
+.booking-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.booking-header { background: var(--dark2); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 64px 24px 18px; flex-shrink: 0; }
+.bh-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.bh-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--cream); }
+.auto-badge { display: flex; align-items: center; gap: 6px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); padding: 5px 12px; border-radius: 10px; font-size: 11px; color: var(--gold); cursor: pointer; }
+.auto-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+
+.cal { user-select: none; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-month-name { font-size: 14px; font-weight: 600; color: var(--cream); }
+.cal-arrow { background: var(--dark4); border: none; color: var(--text-dim); width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.cal-dow { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cal-cell { height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 13px; cursor: pointer; color: var(--text-dim); position: relative; transition: background 0.15s; }
+.cal-cell.cal-today { color: var(--gold); font-weight: 700; }
+.cal-cell.cal-selected { background: var(--gold); color: var(--dark); font-weight: 700; }
+.cal-cell.cal-has-dot::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+.cal-cell.cal-selected.cal-has-dot::after { background: var(--dark); }
+.cal-cell.cal-past { opacity: 0.28; pointer-events: none; }
+.cal-cell.cal-empty { pointer-events: none; }
+
+.slots-scroll { flex: 1; overflow-y: auto; padding: 16px 20px 0; }
+.slots-day-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 12px; }
+
+.slot { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 18px; padding: 15px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: border-color 0.18s, background 0.18s; }
+.slot.slot-selected { border-color: rgba(201,168,76,0.45); background: rgba(201,168,76,0.05); }
+.slot.slot-full { opacity: 0.45; cursor: default; }
+.slot-time { background: var(--dark4); border-radius: 12px; padding: 10px 13px; text-align: center; min-width: 60px; flex-shrink: 0; transition: background 0.18s; }
+.slot.slot-selected .slot-time { background: rgba(201,168,76,0.14); }
+.slot-h { font-size: 18px; font-weight: 700; color: var(--cream); line-height: 1; }
+.slot-m { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.slot-info { flex: 1; min-width: 0; }
+.slot-name { font-size: 14px; font-weight: 600; color: var(--cream); }
+.slot-detail { font-size: 11px; color: var(--text-dim); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot-avail { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 9px; white-space: nowrap; flex-shrink: 0; }
+.avail-open { background: rgba(76,175,122,0.12); color: var(--green); border: 1px solid rgba(76,175,122,0.25); }
+.avail-ltd  { background: rgba(232,169,58,0.12); color: var(--amber); border: 1px solid rgba(232,169,58,0.25); }
+.avail-full { background: rgba(224,92,92,0.12);  color: var(--red);   border: 1px solid rgba(224,92,92,0.25); }
+
+.book-cta-wrap { padding: 12px 20px 0; flex-shrink: 0; }
+.book-cta { width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); border: none; border-radius: 18px; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, background 0.3s; letter-spacing: 0.2px; }
+.book-cta.confirmed { background: linear-gradient(135deg, #4CAF7A, #6dd89a); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--dark4); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">🐾 Battersea <span>K9</span></div>
+  <div class="page-sub">App Prototype · Click screens below to navigate</div>
+</div>
+
+<div class="screen-nav">
+  <button class="screen-btn active" onclick="show('home',this)">Home</button>
+  <button class="screen-btn"        onclick="show('track',this)">Live Tracking</button>
+  <button class="screen-btn"        onclick="show('book',this)">Booking</button>
+</div>
+
+<div class="iphone">
+  <div class="dynamic-island"></div>
+
+  <!-- =========== HOME =========== -->
+  <div class="screen active" id="screen-home">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons"><span>▲▲▲</span><span>WiFi</span><span>🔋</span></div>
+    </div>
+    <div class="home-bg"></div>
+    <div class="home-paw-bg">🐾</div>
+    <div class="home-content">
+      <div class="home-hero-text">
+        <div class="home-greeting">Good Morning</div>
+        <div class="home-name">Welcome back,<br><em>Sarah</em></div>
+      </div>
+      <div class="nwc">
+        <div class="nwc-label">🐾 Next Scheduled Walk</div>
+        <div class="nwc-row">
+          <div class="dog-av">🐶</div>
+          <div class="nwc-info">
+            <div class="nwc-dogname">Biscuit</div>
+            <div class="nwc-when">Today · 2:00 PM – 3:00 PM</div>
+          </div>
+          <div class="nwc-badge">Confirmed</div>
+        </div>
+        <div class="nwc-divider"></div>
+        <div class="nwc-meta">
+          <div class="nwc-meta-item"><div class="nwc-meta-val">1h</div><div class="nwc-meta-lbl">Duration</div></div>
+          <div class="nwc-meta-item"><div class="nwc-meta-val">SW11</div><div class="nwc-meta-lbl">Area</div></div>
+          <div class="nwc-meta-item"><div class="nwc-meta-val">Jack</div><div class="nwc-meta-lbl">Walker</div></div>
+        </div>
+      </div>
+      <div class="tiles-label">Quick Access</div>
+      <div class="tiles">
+        <div class="tile" onclick="show('track',document.querySelectorAll('.screen-btn')[1])">
+          <div class="tile-accent" style="background:var(--gold)"></div>
+          <div class="tile-icon">📍</div>
+          <div class="tile-title">Live Tracking</div>
+          <div class="tile-sub">See where Biscuit is right now</div>
+        </div>
+        <div class="tile" onclick="show('book',document.querySelectorAll('.screen-btn')[2])">
+          <div class="tile-accent" style="background:var(--green)"></div>
+          <div class="tile-icon">📅</div>
+          <div class="tile-title">Book a Walk</div>
+          <div class="tile-sub">Check slots &amp; book instantly</div>
+        </div>
+      </div>
+
+      <!-- Credits wallet strip -->
+      <div class="wallet-strip">
+        <div class="wallet-left">
+          <div class="wallet-label">Your Credits</div>
+          <div class="wallet-val">6 <span>walks remaining</span></div>
+        </div>
+        <div class="wallet-right">
+          <div class="wallet-bar"><div class="wallet-bar-fill"></div></div>
+          <div class="wallet-bar-sub">6 of 10 bundle</div>
+        </div>
+      </div>
+
+      <!-- Walks & Pricing -->
+      <div class="tiles-label" style="padding-top:16px;">Walks &amp; Pricing</div>
+      <div class="purchase-cards">
+        <div class="purchase-card pc-single" onclick="openPurchase('single')">
+          <div class="pc-left">
+            <div class="pc-icon-wrap pc-icon-single">🦮</div>
+            <div class="pc-info">
+              <div class="pc-title">Single Walk</div>
+              <div class="pc-desc">One-off booking, pay as you go</div>
+            </div>
+          </div>
+          <div class="pc-arrow">›</div>
+        </div>
+        <div class="purchase-card pc-bundle" onclick="openPurchase('bundle')">
+          <div class="pc-left">
+            <div class="pc-icon-wrap pc-icon-bundle">🎒</div>
+            <div class="pc-info">
+              <div class="pc-title">Walk Bundle</div>
+              <div class="pc-desc">Buy in bulk &amp; save — top up anytime</div>
+            </div>
+          </div>
+          <div class="pc-badge-save">Best value</div>
+        </div>
+        <div class="purchase-card pc-sub" onclick="openPurchase('sub')">
+          <div class="pc-left">
+            <div class="pc-icon-wrap pc-icon-sub">⭐</div>
+            <div class="pc-info">
+              <div class="pc-title">Subscription</div>
+              <div class="pc-desc">Monthly plan with priority booking</div>
+            </div>
+          </div>
+          <div class="pc-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- Purchase bottom sheet + backdrop (absolute, inside iphone) -->
+      <div class="modal-backdrop" id="modalBackdrop" onclick="closePurchase()"></div>
+      <div class="purchase-sheet" id="purchaseSheet">
+        <div class="ps-handle"></div>
+        <div class="ps-header">
+          <div class="ps-icon" id="psIcon">🦮</div>
+          <div>
+            <div class="ps-title" id="psTitle">Single Walk</div>
+            <div class="ps-desc" id="psDesc">Pay for one walk at a time.</div>
+          </div>
+        </div>
+        <div class="ps-options" id="psOptions"></div>
+        <button class="ps-cta" onclick="closePurchase()">Continue to Payment</button>
+        <button class="ps-cancel" onclick="closePurchase()">Maybe later</button>
+      </div>
+
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item active"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item" onclick="show('track',document.querySelectorAll('.screen-btn')[1])"><span class="nav-icon">📍</span><span class="nav-label">Track</span></div>
+      <div class="nav-item" onclick="show('book',document.querySelectorAll('.screen-btn')[2])"><span class="nav-icon">📅</span><span class="nav-label">Book</span></div>
+    </div>
+  </div>
+
+
+  <!-- =========== LIVE TRACKING =========== -->
+  <div class="screen" id="screen-track">
+    <!-- status bar in dark for map overlap -->
+    <div class="status-bar" style="color:#222;">
+      <span class="status-time" style="color:#333;">9:41</span>
+      <div class="status-icons" style="color:#333;">▲▲▲ WiFi 🔋</div>
+    </div>
+
+    <div class="tracking-wrap">
+      <div class="map-container">
+        <!-- Clean street map SVG of Battersea area -->
+        <svg class="map-svg" viewBox="0 0 371 390" xmlns="http://www.w3.org/2000/svg">
+          <!-- Base -->
+          <rect width="371" height="390" fill="#F0EDE7"/>
+
+          <!-- River Thames -->
+          <path d="M0 358 Q60 348 130 355 Q200 362 280 352 Q330 346 371 350 L371 390 L0 390Z" fill="#C8DCF0"/>
+          <path d="M0 358 Q60 348 130 355 Q200 362 280 352 Q330 346 371 350" stroke="#A8C8E4" stroke-width="1" fill="none"/>
+          <text x="140" y="376" font-size="8.5" fill="#7AAAC8" font-family="DM Sans,sans-serif" letter-spacing="2.5" font-weight="500">RIVER THAMES</text>
+
+          <!-- Battersea Park — large green block -->
+          <rect x="18" y="64" width="162" height="128" rx="5" fill="#D8EEC8" stroke="#B4D4A0" stroke-width="1.2"/>
+          <!-- Park internal paths -->
+          <path d="M40 90 Q99 110 158 90" stroke="#C0DCA8" stroke-width="1.5" fill="none"/>
+          <path d="M30 140 Q99 120 168 142" stroke="#C0DCA8" stroke-width="1.5" fill="none"/>
+          <!-- Park lake (ellipse) -->
+          <ellipse cx="99" cy="118" rx="22" ry="14" fill="#B4D4EC" stroke="#98C0DC" stroke-width="0.8"/>
+          <text x="99" y="122" text-anchor="middle" font-size="7" fill="#6AA8C8" font-family="DM Sans,sans-serif">lake</text>
+          <text x="99" y="155" text-anchor="middle" font-size="10.5" fill="#5C9850" font-family="DM Sans,sans-serif" font-weight="600">Battersea Park</text>
+
+          <!-- === ROADS === -->
+          <!-- Chelsea Bridge Rd — main vertical, far left -->
+          <rect x="12" y="0" width="13" height="358" fill="#FFFFFF" stroke="#D0C8B8" stroke-width="0.6"/>
+          <text x="18" y="48" text-anchor="middle" font-size="6.5" fill="#9A9080" font-family="DM Sans,sans-serif" transform="rotate(-90,18,48)">Chelsea Bridge Rd</text>
+
+          <!-- Queenstown Rd — main vertical, right of park -->
+          <rect x="182" y="0" width="13" height="355" fill="#FFFFFF" stroke="#D0C8B8" stroke-width="0.6"/>
+          <text x="188" y="220" text-anchor="middle" font-size="6.5" fill="#9A9080" font-family="DM Sans,sans-serif" transform="rotate(-90,188,220)">Queenstown Rd</text>
+
+          <!-- Battersea Park Rd — main horizontal top of park -->
+          <rect x="0" y="58" width="371" height="14" fill="#FFFFFF" stroke="#D0C8B8" stroke-width="0.6"/>
+          <text x="230" y="68" font-size="6.5" fill="#9A9080" font-family="DM Sans,sans-serif">Battersea Park Rd</text>
+
+          <!-- Albert Bridge Rd — horizontal below park -->
+          <rect x="0" y="196" width="195" height="11" fill="#FFFFFF" stroke="#D0C8B8" stroke-width="0.6"/>
+          <text x="32" y="205" font-size="6.5" fill="#9A9080" font-family="DM Sans,sans-serif">Albert Bridge Rd</text>
+
+          <!-- Battersea High St — right side vertical -->
+          <rect x="228" y="0" width="10" height="355" fill="#F8F5F0" stroke="#DDD8CC" stroke-width="0.5"/>
+          <text x="233" y="180" text-anchor="middle" font-size="6" fill="#A8A098" font-family="DM Sans,sans-serif" transform="rotate(-90,233,180)">Battersea High St</text>
+
+          <!-- Minor horizontals right side -->
+          <rect x="197" y="100" width="174" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="197" y="148" width="174" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="197" y="240" width="174" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="197" y="290" width="174" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <!-- Minor verticals right -->
+          <rect x="270" y="0" width="8" height="355" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="322" y="0" width="8" height="355" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+
+          <!-- Minor roads left (south of park) -->
+          <rect x="27" y="210" width="10" height="145" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="68" y="210" width="8" height="145" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="110" y="210" width="8" height="145" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="150" y="210" width="8" height="145" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="0" y="248" width="195" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="0" y="300" width="195" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+          <rect x="0" y="330" width="371" height="8" fill="#F5F2EC" stroke="#DDD8CC" stroke-width="0.4"/>
+
+          <!-- Buildings — right quadrant blocks -->
+          <rect x="200" y="72" width="24" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="240" y="72" width="24" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="284" y="72" width="30" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="336" y="72" width="26" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="200" y="110" width="24" height="32" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="240" y="110" width="24" height="32" rx="2.5" fill="#E4DDD3" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="284" y="110" width="30" height="32" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="336" y="110" width="26" height="32" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="200" y="160" width="24" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="240" y="160" width="24" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="284" y="160" width="72" height="24" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="200" y="250" width="24" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="240" y="250" width="24" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="284" y="250" width="30" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="336" y="250" width="26" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <!-- Buildings left side (below park) -->
+          <rect x="26" y="212" width="37" height="30" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="74" y="212" width="30" height="30" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="120" y="212" width="25" height="30" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="26" y="260" width="37" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="74" y="260" width="30" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="120" y="260" width="25" height="34" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+          <rect x="26" y="312" width="140" height="14" rx="2.5" fill="#E8E2D8" stroke="#D4CEC4" stroke-width="0.5"/>
+
+          <!-- Walk trail (dashed gold path) -->
+          <path d="M108 316 L106 300 L104 282 L103 265 L103 252 L104 238 L106 222 L108 208 L112 197 L116 187 L120 177 L124 167 L126 157 L128 147 L129 137 L130 127 L130 117 L129 107"
+                stroke="rgba(201,168,76,0.55)" stroke-width="3.5" stroke-dasharray="7,5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Route continuation (lighter) -->
+          <path d="M129 107 L128 95 L124 83 L118 73 L110 65"
+                stroke="rgba(201,168,76,0.2)" stroke-width="2.5" stroke-dasharray="5,6" fill="none" stroke-linecap="round"/>
+
+          <!-- Compass -->
+          <circle cx="350" cy="26" r="14" fill="rgba(255,255,255,0.7)" stroke="#D0C8B8" stroke-width="0.8"/>
+          <text x="350" y="23" text-anchor="middle" font-size="8" fill="#5A5248" font-family="DM Sans,sans-serif" font-weight="700">N</text>
+          <line x1="350" y1="25" x2="350" y2="35" stroke="#D0C8B8" stroke-width="1"/>
+        </svg>
+
+        <!-- Animated dog pin (~32% down, 35% across, on the trail) -->
+        <div class="dog-pin" style="top:32%;left:35%;">
+          <div class="pin-pulse"></div>
+          <div class="pin-pulse2"></div>
+          <div class="pin-core">🐕</div>
+        </div>
+
+        <!-- Home pin (south, ~83% down, 29% across) -->
+        <div class="home-pin" style="top:83%;left:29%;">
+          <div class="home-pin-core">🏠</div>
+        </div>
+
+        <!-- Overlay header -->
+        <div class="map-overlay-top">
+          <div class="mot-title">Biscuit's Walk</div>
+          <div class="live-pill"><div class="live-dot"></div>LIVE · Updated just now</div>
+        </div>
+      </div>
+
+      <!-- Bottom panel -->
+      <div class="tracking-panel">
+        <div class="tp-handle"></div>
+        <div class="tp-dog-row">
+          <div class="tp-dog-av">🐶</div>
+          <div class="tp-dog-info">
+            <div class="tp-dog-name">Biscuit</div>
+            <div class="tp-dog-sub">Currently in Battersea Park</div>
+          </div>
+          <div class="tp-walker-badge"><strong>Jack</strong>walker</div>
+        </div>
+        <div class="tp-stats">
+          <div class="tp-stat"><div class="tp-stat-icon">⏱</div><div class="tp-stat-val">38m</div><div class="tp-stat-lbl">Elapsed</div></div>
+          <div class="tp-stat"><div class="tp-stat-icon">📏</div><div class="tp-stat-val">2.1km</div><div class="tp-stat-lbl">Distance</div></div>
+          <div class="tp-stat"><div class="tp-stat-icon">🐾</div><div class="tp-stat-val">3.3</div><div class="tp-stat-lbl">km/h</div></div>
+        </div>
+        <div class="eta-card">
+          <div class="eta-top">
+            <div>
+              <div class="eta-label">Est. Return Home</div>
+              <div class="eta-time">3:06 PM</div>
+              <div class="eta-note">~22 mins · walk ends 3:00 PM</div>
+            </div>
+            <div class="eta-right">
+              <div class="eta-pct">65%</div>
+              <div class="eta-pct-lbl">complete</div>
+            </div>
+          </div>
+          <div class="eta-progress-wrap">
+            <span class="eta-progress-start">2:00</span>
+            <div class="eta-progress-bar"><div class="eta-progress-fill"></div></div>
+            <span class="eta-progress-end">3:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item" onclick="show('home',document.querySelectorAll('.screen-btn')[0])"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item active"><span class="nav-icon">📍</span><span class="nav-label">Track</span></div>
+      <div class="nav-item" onclick="show('book',document.querySelectorAll('.screen-btn')[2])"><span class="nav-icon">📅</span><span class="nav-label">Book</span></div>
+    </div>
+  </div>
+
+
+  <!-- =========== BOOKING =========== -->
+  <div class="screen" id="screen-book">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons"><span>▲▲▲</span><span>WiFi</span><span>🔋</span></div>
+    </div>
+    <div class="booking-wrap">
+      <div class="booking-header">
+        <div class="bh-row">
+          <div class="bh-title">Book a Walk</div>
+          <div class="auto-badge"><div class="auto-dot"></div>Auto-Book On</div>
+        </div>
+        <div class="cal">
+          <div class="cal-head">
+            <button class="cal-arrow">‹</button>
+            <span class="cal-month-name">March 2026</span>
+            <button class="cal-arrow">›</button>
+          </div>
+          <div class="cal-dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div>
+      <div class="slots-scroll">
+        <div class="slots-day-title" id="slotsDayTitle">Available Slots — Mon 2 Mar</div>
+        <div id="slotsList"></div>
+      </div>
+      <div class="book-cta-wrap">
+        <button class="book-cta" id="bookBtn" onclick="confirmBook()">Confirm Booking — 10:30 AM</button>
+      </div>
+      <div class="safe-bottom"></div>
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item" onclick="show('home',document.querySelectorAll('.screen-btn')[0])"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item" onclick="show('track',document.querySelectorAll('.screen-btn')[1])"><span class="nav-icon">📍</span><span class="nav-label">Track</span></div>
+      <div class="nav-item active"><span class="nav-icon">📅</span><span class="nav-label">Book</span></div>
+    </div>
+  </div>
+
+</div><!-- /iphone -->
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+const SLOTS = {
+  '08:00': { name:'Morning Walk',   detail:'1 hr · Battersea Park · Jack',       avail:'open', count:'3 left' },
+  '10:30': { name:'Standard Walk',  detail:'1 hr · Chelsea Embankment · Jack',   avail:'ltd',  count:'1 left' },
+  '14:00': { name:'Afternoon Walk', detail:'1 hr · Battersea Park · Jack',       avail:'open', count:'4 left' },
+  '16:30': { name:'Evening Walk',   detail:'45 min · Clapham Common · Jack',     avail:'full', count:'Full'   },
+  '18:00': { name:'Late Walk',      detail:'1 hr · Battersea Park · Jack',       avail:'open', count:'2 left' },
+};
+const BOOKED_DAYS = [2,5,9,12,16,19,23,26];
+let selectedTime = '10:30';
+
+function buildCal() {
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-cell cal-empty';
+    grid.appendChild(el);
+  }
+  for (let d = 1; d <= 31; d++) {
+    const el = document.createElement('div');
+    let cls = 'cal-cell';
+    if (d < 2)  cls += ' cal-past';
+    if (d === 2) cls += ' cal-today cal-selected';
+    if (BOOKED_DAYS.includes(d)) cls += ' cal-has-dot';
+    el.className = cls; el.textContent = d;
+    el.addEventListener('click', function() {
+      if (this.classList.contains('cal-past')) return;
+      document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('cal-selected'));
+      this.classList.add('cal-selected');
+      buildSlots(d);
+    });
+    grid.appendChild(el);
+  }
+}
+
+function buildSlots(day) {
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayName = days[(day - 2 + 700) % 7];
+  document.getElementById('slotsDayTitle').textContent = `Available Slots — ${dayName} ${day} Mar`;
+  const list = document.getElementById('slotsList');
+  list.innerHTML = '';
+  Object.entries(SLOTS).forEach(([time, data]) => {
+    const [hh, mm] = time.split(':');
+    const h = parseInt(hh);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const disp = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    const isFull = data.avail === 'full';
+    const isSel  = time === selectedTime;
+    const ac = data.avail === 'open' ? 'avail-open' : data.avail === 'ltd' ? 'avail-ltd' : 'avail-full';
+    const el = document.createElement('div');
+    el.className = `slot${isFull ? ' slot-full' : ''}${isSel ? ' slot-selected' : ''}`;
+    el.innerHTML = `
+      <div class="slot-time">
+        <div class="slot-h">${String(disp).padStart(2,'0')}:${mm}</div>
+        <div class="slot-m">${ampm}</div>
+      </div>
+      <div class="slot-info">
+        <div class="slot-name">${data.name}</div>
+        <div class="slot-detail">${data.detail}</div>
+      </div>
+      <div class="slot-avail ${ac}">${data.count}</div>`;
+    if (!isFull) {
+      el.addEventListener('click', () => {
+        selectedTime = time;
+        document.querySelectorAll('.slot').forEach(s => s.classList.remove('slot-selected'));
+        el.classList.add('slot-selected');
+        const btn = document.getElementById('bookBtn');
+        btn.textContent = `Confirm Booking — ${String(disp).padStart(2,'0')}:${mm} ${ampm}`;
+        btn.classList.remove('confirmed');
+      });
+    }
+    list.appendChild(el);
+  });
+}
+
+function confirmBook() {
+  const btn = document.getElementById('bookBtn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Booked! Confirmation sent to Sarah';
+  btn.classList.add('confirmed');
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('confirmed'); }, 3000);
+}
+
+buildCal();
+buildSlots(2);
+const PURCHASE_DATA = {
+  single: {
+    icon: '🦮', title: 'Single Walk', desc: 'Pay for one walk at a time — no commitment',
+    options: [
+      { name: '30-min Walk', detail: 'Great for smaller breeds', price: 'View price', saving: '' },
+      { name: '1-hour Walk', detail: 'Standard Battersea K9 walk', price: 'View price', saving: '' },
+    ]
+  },
+  bundle: {
+    icon: '🎒', title: 'Walk Bundle', desc: 'Buy more, save more — credits never expire',
+    options: [
+      { name: '5 Walk Bundle', detail: '1-hour walks, use anytime', price: 'View price', saving: 'Save vs single price' },
+      { name: '10 Walk Bundle', detail: '1-hour walks, best value', price: 'View price', saving: 'Best value' },
+      { name: '20 Walk Bundle', detail: 'Perfect for regulars', price: 'View price', saving: 'Maximum saving' },
+    ]
+  },
+  sub: {
+    icon: '⭐', title: 'Subscription', desc: 'Monthly rolling plan — cancel anytime',
+    options: [
+      { name: '4 Walks / Month', detail: 'Once a week', price: 'View price', saving: '' },
+      { name: '8 Walks / Month', detail: 'Twice a week — most popular', price: 'View price', saving: 'Priority booking included' },
+      { name: 'Unlimited Walks', detail: 'As many as you need', price: 'Coming soon', saving: '' },
+    ]
+  }
+};
+
+function openPurchase(type) {
+  const d = PURCHASE_DATA[type];
+  document.getElementById('psIcon').textContent = d.icon;
+  document.getElementById('psTitle').textContent = d.title;
+  document.getElementById('psDesc').textContent = d.desc;
+  const opts = document.getElementById('psOptions');
+  opts.innerHTML = '';
+  d.options.forEach((o, i) => {
+    const el = document.createElement('div');
+    el.className = 'ps-option' + (i === 0 ? ' ps-selected' : '');
+    el.innerHTML = `
+      <div>
+        <div class="ps-option-name">${o.name}</div>
+        <div class="ps-option-detail">${o.detail}</div>
+      </div>
+      <div class="ps-option-right">
+        <div class="ps-option-price">${o.price}</div>
+        ${o.saving ? '<div class="ps-option-saving">' + o.saving + '</div>' : ''}
+      </div>`;
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.ps-option').forEach(e => e.classList.remove('ps-selected'));
+      el.classList.add('ps-selected');
+    });
+    opts.appendChild(el);
+  });
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('purchaseSheet').classList.add('open');
+}
+
+function closePurchase() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.getElementById('purchaseSheet').classList.remove('open');
+}
+
+// Embed mode: hide outer page chrome when loaded via ?embed
+if (location.search.includes('embed')) {
+  const hdr = document.querySelector('.page-header');
+  const nav = document.querySelector('.screen-nav');
+  if (hdr) hdr.style.display = 'none';
+  if (nav) nav.style.display = 'none';
+  document.body.style.padding = '0';
+  document.body.style.minHeight = '852px';
+  document.body.style.justifyContent = 'flex-start';
+}
+
+</script>
+</body>
+</html>
