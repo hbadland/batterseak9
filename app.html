@@ -272,6 +272,12 @@ body {
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--dark4); border-radius: 2px; }
+
+/* Embed mode — strip chrome so iframe fits flush inside index.html phone frame */
+html.embed body { padding: 0; min-height: 852px; display: block; }
+html.embed .page-header,
+html.embed .screen-nav { display: none; }
+html.embed .iphone { border: none; border-radius: 0; box-shadow: none; }
 </style>
 </head>
 <body>
@@ -620,6 +626,10 @@ body {
 </div><!-- /iphone -->
 
 <script>
+if (new URLSearchParams(location.search).has('embed')) {
+  document.documentElement.classList.add('embed');
+}
+
 function show(id, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
