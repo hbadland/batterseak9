@@ -237,37 +237,49 @@
   .card-text { font-size: 0.95rem; line-height: 1.75; color: var(--muted); }
 
   /* TRAINING */
-  #training { background: var(--cream); }
-  .training-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-  .training-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
-  .training-list li {
-    background: var(--offwhite); border: 1px solid var(--border); border-radius: 12px;
-    padding: 1.4rem 1.6rem 1.4rem 2.2rem; transition: all 0.25s; position: relative;
+  #training { background: var(--forest); }
+  #training .section-inner { max-width: 1100px; }
+  .training-head {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    padding-bottom: 4rem; border-bottom: 1px solid rgba(245,240,232,0.1);
+    align-items: end;
   }
-  .training-list li::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 4px; background: var(--green); border-radius: 4px 0 0 4px;
+  .training-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 4vw, 3.8rem);
+    font-weight: 700; color: var(--cream); line-height: 1.05; margin-top: 0.75rem;
   }
-  .training-list li:hover { transform: translateX(6px); box-shadow: 0 4px 20px rgba(28,58,43,0.08); }
-  .training-list strong { display: block; font-weight: 600; color: var(--forest); margin-bottom: 0.3rem; font-size: 0.95rem; }
-  .training-list span { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .training-title em { color: var(--sage); font-style: italic; }
+  .training-lead {
+    font-size: 1rem; line-height: 1.85;
+    color: rgba(245,240,232,0.58); margin-bottom: 1.75rem;
+  }
+  .training-creds { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+  .training-creds span {
+    font-size: 0.75rem; font-weight: 600; color: var(--mint);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .cred-dot { opacity: 0.28; color: var(--mint) !important; font-weight: 300 !important; letter-spacing: 0 !important; }
 
-  .trainer-card {
-    background: var(--forest); border-radius: 20px; padding: 3rem;
-    color: var(--cream); position: sticky; top: 100px;
+  .training-program-row {
+    display: grid; grid-template-columns: 2.75rem 1fr;
+    gap: 1.5rem; align-items: baseline;
+    padding: 1.75rem 0; border-bottom: 1px solid rgba(245,240,232,0.08);
   }
-  .trainer-photo {
-    width: 100%; aspect-ratio: 4/3; object-fit: cover;
-    border-radius: 16px; margin-top: 1.5rem; display: block;
+  .prog-num {
+    font-size: 0.68rem; font-weight: 500;
+    color: rgba(245,240,232,0.18); letter-spacing: 1px; padding-top: 5px;
   }
-  .trainer-label { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--mint); margin-bottom: 1rem; }
-  .trainer-name { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--cream); margin-bottom: 1rem; line-height: 1.1; }
-  .trainer-name em { font-style: italic; color: var(--sage); }
-  .trainer-bio { font-size: 0.95rem; line-height: 1.75; color: rgba(245,240,232,0.7); margin-bottom: 2rem; }
-  .trainer-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .stat { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 1.2rem; text-align: center; }
-  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--sage); line-height: 1; margin-bottom: 0.25rem; }
-  .stat-label { font-size: 0.8rem; color: rgba(245,240,232,0.5); letter-spacing: 0.5px; }
+  .prog-body { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; }
+  .prog-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+    font-weight: 600; color: var(--cream); white-space: nowrap; flex-shrink: 0;
+  }
+  .prog-desc {
+    font-size: 0.875rem; color: rgba(245,240,232,0.42);
+    line-height: 1.65; text-align: right; max-width: 340px;
+  }
+  .training-foot { padding-top: 3.5rem; display: flex; justify-content: center; }
 
   /* CATCHMENT */
   #catchment { background: var(--offwhite); }
@@ -442,8 +454,10 @@
     .hero-image { display: none; }
     .hero-title { font-size: 2.8rem; }
     .daycare-grid { grid-template-columns: 1fr; }
-    .training-inner { grid-template-columns: 1fr; gap: 3rem; }
-    .trainer-card { position: static; }
+    .training-head { grid-template-columns: 1fr; gap: 2rem; padding-bottom: 2.5rem; }
+    .prog-body { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    .prog-name { white-space: normal; }
+    .prog-desc { text-align: left; max-width: none; }
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
     .form-row { grid-template-columns: 1fr; }
     .daycare-header, .gallery-header, .reviews-intro { flex-direction: column; align-items: flex-start; }
@@ -486,7 +500,7 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-overline">Battersea &amp; Chelsea · Est. 2024</div>
+      <div class="hero-overline">Battersea &amp; Chelsea · Est. 2026</div>
       <h1 class="hero-title">
         Bespoke canine<br>services in the<br>heart of <em>South West<br>London.</em>
       </h1>
@@ -541,32 +555,59 @@
 <!-- TRAINING -->
 <section id="training">
   <div class="section-inner">
-    <div class="training-inner">
-      <div class="reveal">
-        <div class="section-label">Expert training</div>
-        <h2 class="section-title">Professional<br><em>Training Programs</em></h2>
-        <p class="section-desc">Led by Jack, a qualified trainer with over 10 years experience across military and civilian settings.</p>
-        <ul class="training-list">
-          <li><strong>Puppy Foundation Classes</strong><span>Essential socialisation and basic obedience for puppies aged 8 to 16 weeks, setting them up for lifelong success.</span></li>
-          <li><strong>Basic Obedience Training</strong><span>Master essential commands including sit, stay, come, down, and loose-leash walking in various environments.</span></li>
-          <li><strong>Advanced Obedience</strong><span>Build on basic skills with off-leash reliability, distance commands, and complex behaviour sequences.</span></li>
-          <li><strong>Behaviour Modification</strong><span>Address challenges like reactivity, anxiety, jumping, or excessive barking with customised training plans.</span></li>
-          <li><strong>Group Classes</strong><span>Learn alongside other dogs in a supportive environment that builds confidence and real-world skills.</span></li>
-        </ul>
+    <div class="training-head reveal">
+      <div>
+        <div class="section-label" style="color:var(--mint)">Expert training</div>
+        <h2 class="training-title">Programs<br>built to <em>last.</em></h2>
       </div>
-      <div class="reveal" style="transition-delay:0.15s">
-        <div class="trainer-card">
-          <div class="trainer-label">Meet your trainer</div>
-          <div class="trainer-name">Jack</div>
-          <p class="trainer-bio">With a decade of experience spanning military working dog programmes and civilian pet training, Jack brings structured, evidence-based methods and genuine passion to every session.</p>
-          <div class="trainer-stats">
-            <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years experience</div></div>
-            <div class="stat"><div class="stat-num" style="font-size:1rem;font-family:'Inter',sans-serif;letter-spacing:1px;">Mil.</div><div class="stat-label">Military trained</div></div>
-            <div class="stat"><div class="stat-num">5</div><div class="stat-label">Programs offered</div></div>
-            <div class="stat"><div class="stat-num">SW</div><div class="stat-label">London based</div></div>
-          </div>
+      <div>
+        <p class="training-lead">Jack brings over a decade of experience from military working dog programmes and civilian practice — structured, evidence-based, and always kind.</p>
+        <div class="training-creds">
+          <span>10+ years</span><span class="cred-dot">·</span>
+          <span>Military certified</span><span class="cred-dot">·</span>
+          <span>SW London</span>
         </div>
       </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.1s">
+      <div class="training-program-row">
+        <span class="prog-num">01</span>
+        <div class="prog-body">
+          <strong class="prog-name">Puppy Foundation</strong>
+          <span class="prog-desc">Socialisation and core obedience for pups aged 8–16 weeks.</span>
+        </div>
+      </div>
+      <div class="training-program-row">
+        <span class="prog-num">02</span>
+        <div class="prog-body">
+          <strong class="prog-name">Basic Obedience</strong>
+          <span class="prog-desc">Sit, stay, come, down, and loose-leash walking across real-world environments.</span>
+        </div>
+      </div>
+      <div class="training-program-row">
+        <span class="prog-num">03</span>
+        <div class="prog-body">
+          <strong class="prog-name">Advanced Obedience</strong>
+          <span class="prog-desc">Off-leash reliability, distance commands, and complex behaviour sequences.</span>
+        </div>
+      </div>
+      <div class="training-program-row">
+        <span class="prog-num">04</span>
+        <div class="prog-body">
+          <strong class="prog-name">Behaviour Modification</strong>
+          <span class="prog-desc">Tailored plans for reactivity, anxiety, and unwanted habits.</span>
+        </div>
+      </div>
+      <div class="training-program-row">
+        <span class="prog-num">05</span>
+        <div class="prog-body">
+          <strong class="prog-name">Group Classes</strong>
+          <span class="prog-desc">Real-world confidence built alongside other dogs in a structured setting.</span>
+        </div>
+      </div>
+    </div>
+    <div class="training-foot reveal" style="transition-delay:0.15s">
+      <a href="#contact" class="btn-primary">Book a session</a>
     </div>
   </div>
 </section>
