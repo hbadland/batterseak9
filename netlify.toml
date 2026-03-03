@@ -1,6 +1,12 @@
 [build]
   publish = "."
 
+# Explicit MIME type for SVG favicon
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Content-Type = "image/svg+xml"
+
 # Serve WebP to browsers that support it
 [[headers]]
   for = "/images/*.webp"
