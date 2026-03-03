@@ -144,7 +144,7 @@
 
   /* HERO */
   .hero {
-    margin-top: 76px; min-height: calc(100vh - 76px);
+    margin-top: 0; padding-top: 76px; min-height: 100vh;
     background: var(--forest); position: relative; overflow: hidden; display: flex; align-items: center;
   }
   .hero::before {
@@ -332,11 +332,29 @@
 
   /* REVIEWS */
   #reviews { background: var(--cream); }
-  .reviews-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; gap: 2rem; flex-wrap: wrap; }
-  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .reviews-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; gap: 2rem; flex-wrap: wrap; }
+
+  /* Marquee */
+  .reviews-marquee-wrap {
+    overflow: hidden; position: relative;
+    margin: 0 -2rem;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .reviews-track {
+    display: flex; gap: 1.5rem; width: max-content;
+    padding: 0.25rem 0 0.75rem;
+    animation: reviews-scroll 50s linear infinite;
+  }
+  .reviews-track:hover { animation-play-state: paused; }
+  @keyframes reviews-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
   .review-card {
     background: var(--offwhite); border: 1px solid var(--border); border-radius: 16px;
-    padding: 2rem; display: flex; flex-direction: column; gap: 1rem;
+    padding: 1.75rem; display: flex; flex-direction: column; gap: 1rem;
+    width: 340px; flex-shrink: 0;
   }
   .review-stars { color: #F5A623; font-size: 1.1rem; letter-spacing: 2px; }
   .review-text { font-size: 0.95rem; line-height: 1.75; color: var(--charcoal); font-style: italic; flex: 1; }
@@ -429,7 +447,6 @@
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
     .form-row { grid-template-columns: 1fr; }
     .daycare-header, .gallery-header, .reviews-intro { flex-direction: column; align-items: flex-start; }
-    .reviews-grid { grid-template-columns: 1fr; }
     .app-layout { grid-template-columns: 1fr; }
     .app-phone-col { order: -1; }
     section { padding: 5rem 1.5rem; }
@@ -658,38 +675,69 @@
       </div>
       <p class="section-desc">Trusted by dog owners across Battersea and Chelsea. Here is what some of them have to say.</p>
     </div>
-    <div class="reviews-grid">
-      <div class="review-card reveal">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Jack and the team have been incredible with our dog. The personal care and attention he gets is something you just do not find at bigger daycare places."</p>
-        <div class="review-author">
-          <div class="review-avatar">S</div>
-          <div>
-            <div class="review-name">Sarah M.</div>
-            <div class="review-source">Google Review</div>
-          </div>
+    <div class="reviews-marquee-wrap" aria-label="Customer reviews">
+      <div class="reviews-track">
+        <!-- Set 1 -->
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Jack and the team have been incredible with our dog. The personal care and attention he gets is something you just do not find at bigger daycare places."</p>
+          <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah M.</div><div class="review-source">Google Review</div></div></div>
         </div>
-      </div>
-      <div class="review-card reveal" style="transition-delay:0.1s">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"I love that they collect her from our door. She comes back happy and tired every time. The flexibility around our schedule has been a real lifesaver."</p>
-        <div class="review-author">
-          <div class="review-avatar">T</div>
-          <div>
-            <div class="review-name">Tom R.</div>
-            <div class="review-source">Google Review</div>
-          </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"I love that they collect her from our door. She comes back happy and tired every time. The flexibility around our schedule has been a real lifesaver."</p>
+          <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Tom R.</div><div class="review-source">Google Review</div></div></div>
         </div>
-      </div>
-      <div class="review-card reveal" style="transition-delay:0.2s">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Our puppy has come on so much since starting training with Jack. His background really shows, but it is always kind, calm and positive."</p>
-        <div class="review-author">
-          <div class="review-avatar">A</div>
-          <div>
-            <div class="review-name">Anna K.</div>
-            <div class="review-source">Google Review</div>
-          </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Our puppy has come on so much since starting training with Jack. His background really shows, but it is always kind, calm and positive."</p>
+          <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Anna K.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Hugo absolutely loves his daily walks with Jack. We get photos throughout the day and he comes home so content. Exceptional, personal service."</p>
+          <div class="review-author"><div class="review-avatar">E</div><div><div class="review-name">Emma L.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"The results have been remarkable. Our reactive dog is now calm and confident around other dogs. Cannot recommend Battersea K9 enough."</p>
+          <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">James &amp; Priya</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Brilliant from start to finish. Jack truly understands dogs and it shows in how much our boy has come on in just a few weeks."</p>
+          <div class="review-author"><div class="review-avatar">C</div><div><div class="review-name">Charlotte B.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <!-- Set 2 (duplicate for seamless loop) -->
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Jack and the team have been incredible with our dog. The personal care and attention he gets is something you just do not find at bigger daycare places."</p>
+          <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah M.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"I love that they collect her from our door. She comes back happy and tired every time. The flexibility around our schedule has been a real lifesaver."</p>
+          <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Tom R.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Our puppy has come on so much since starting training with Jack. His background really shows, but it is always kind, calm and positive."</p>
+          <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Anna K.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Hugo absolutely loves his daily walks with Jack. We get photos throughout the day and he comes home so content. Exceptional, personal service."</p>
+          <div class="review-author"><div class="review-avatar">E</div><div><div class="review-name">Emma L.</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"The results have been remarkable. Our reactive dog is now calm and confident around other dogs. Cannot recommend Battersea K9 enough."</p>
+          <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">James &amp; Priya</div><div class="review-source">Google Review</div></div></div>
+        </div>
+        <div class="review-card" aria-hidden="true">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Brilliant from start to finish. Jack truly understands dogs and it shows in how much our boy has come on in just a few weeks."</p>
+          <div class="review-author"><div class="review-avatar">C</div><div><div class="review-name">Charlotte B.</div><div class="review-source">Google Review</div></div></div>
         </div>
       </div>
     </div>
